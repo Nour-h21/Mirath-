@@ -1,0 +1,21 @@
+import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../core/services/storage_service.dart';
+
+final getIt = GetIt.instance;
+
+Future<void> init() async {
+  // await initCoreModule();
+}
+
+Future<void> setupDI() async {
+  // 1️⃣ SharedPreferences
+  final prefs = await SharedPreferences.getInstance();
+  getIt.registerSingleton<SharedPreferences>(prefs);
+
+  // 2️⃣ StorageService
+  getIt.registerSingleton<StorageService>(
+    StorageService(getIt<SharedPreferences>()),
+  );
+}
