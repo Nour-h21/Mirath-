@@ -24,6 +24,9 @@ dio.interceptors.add(
       const authFreeEndpoints = [
         "register",
         "signin",
+        "userForgotPassword",
+        "userResetPassword",
+        "userCheckCode",
       ];
 
       // إذا الـ endpoint موجود ضمن القائمة → ما نضيف توكن

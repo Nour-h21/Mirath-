@@ -12,7 +12,7 @@ class ResponsiveTestPage extends StatelessWidget {
         title: Text(
           "Responsive Test",
           // style: TextStyle(fontSize: context.sp(5)),
-          style: AppTextStyles.bigBeigeStyle(context),
+          style: AppTextStyles.displayLarge(context),
         ),
       ),
       body: Center(
@@ -22,8 +22,8 @@ class ResponsiveTestPage extends StatelessWidget {
 
             // 🔵 Container responsive
             Container(
-              width: context.wp(80), // 80% من العرض
-              height: context.hp(20), // 20% من الطول
+              width: context.w(80), // 80% من العرض
+              height: context.h(20), // 20% من الطول
               decoration: BoxDecoration(
                 color: Colors.blue,
                 borderRadius: BorderRadius.circular(12),
@@ -39,12 +39,12 @@ class ResponsiveTestPage extends StatelessWidget {
               ),
             ),
 
-            SizedBox(height: context.hp(5)),
+            SizedBox(height: context.h(5)),
 
             // 🟢 زر responsive
             SizedBox(
-              width: context.wp(50),
-              height: context.hp(7),
+              width: context.w(50),
+              height: context.h(7),
               child: ElevatedButton(
                 onPressed: () {},
                 child: Text(
@@ -54,7 +54,7 @@ class ResponsiveTestPage extends StatelessWidget {
               ),
             ),
 
-            SizedBox(height: context.hp(5)),
+            SizedBox(height: context.h(5)),
 
             // 📊 معلومات الشاشة
             Text(

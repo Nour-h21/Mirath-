@@ -9,10 +9,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(create: (context) => ThemeBloc()..add(InitThemeEvent(),),
+    return BlocProvider(
+      create: (context) => ThemeBloc()..add(InitThemeEvent()),
       child: BlocBuilder<ThemeBloc, ThemeData>(
         builder: (context, state) {
-          return MaterialApp.router(theme: state, routerConfig: router, );
+          return MediaQuery(
+  data: MediaQuery.of(context).copyWith(
+    textScaleFactor: 1.0,
+  ),
+            child: MaterialApp.router(
+              theme: state,
+              routerConfig: router,
+              debugShowCheckedModeBanner: false,
+            ),
+          );
         },
       ),
     );

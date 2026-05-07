@@ -1,3 +1,3 @@
 class AppAssets {
-  static String background = "";
+  static String background = "assets/images/image.png";
 }

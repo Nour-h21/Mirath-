@@ -2,11 +2,14 @@ import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/services/storage_service.dart';
+import 'change_password_module.dart';
+import 'core_module.dart';
 
 final getIt = GetIt.instance;
 
 Future<void> init() async {
-  // await initCoreModule();
+  await initCoreModule();
+  await initChangePasswordModule();
 }
 
 Future<void> setupDI() async {
