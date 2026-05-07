@@ -1,8 +1,5 @@
 class AppStrings {
-  static String welcome = "Notification";
   // static String welcomeb = "أهلاً بك، قم بتسجيل الدخول إلى حسابك";
-  static String welcomeb = "Welcome Back! Please LogIn To Your Account";
-  static String createAccounts = "Welcome , Please Create Your Account";
   // static String createAccounts = "أهلاً بك ، قم بإنشاء حسابك الآن";
    static String firstName = 'الاسم';
    static String secondName = 'الكنية';
@@ -41,21 +38,5 @@ class AppStrings {
   // static String enterNewPasswordhint =  "يجب أن تكون كلمة المرور الجديدة مختلفة عن كلمة المرور المستخدمة مسبقاً";
   // static String resetPassword =  "إعادة تعيين كلمة المرور";
    static String forgotPassword =  "هل نسيت كلمة المرور ؟ ";
- // static String forgotPassword =  "Forgot Your Password ?";
 
-  static String sendOtp = "The code has been sent again";
-  static String returnOtp = 'Resend Code';
-  static String verification = 'Verification';
-  static String verificationCode = 'Enter Verification Code';
-  static String enterVerificationCode = 'Enter the 6-digit verification code sent to your Email or WhatsApp';
-  static String noteVerificationCode = "Please enter a valid OTP code";
- // static String enterEmail = "Enter Email Address";
-  static String enterEmailhint = "Please enter the email address associated with your account, a verification code will be sent to create a new password via email";
-  // static String email = "Email";
-  static String confirmation = "Confirm";
-  static String enterCode = 'Enter the 6-digit verification code sent to your email';
-  static String verificationEmail = 'Verify your email';
-  static String enterNewPassword = "Enter new password";
-  static String enterNewPasswordhint = "The new password must be different from the previously used password";
-  static String resetPassword = "Reset Password";
 }

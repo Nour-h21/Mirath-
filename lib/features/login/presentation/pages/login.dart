@@ -8,7 +8,7 @@ import '../../../../core/constants/assets.dart';
 import '../../../../core/design/tokens/colors.dart';
 import '../../../../core/shared/page/auth_background.dart';
 import '../../../../core/shared/widgets/buttons/auth_button.dart';
-import '../../../../core/shared/widgets/inputs/text_field_input.dart';
+import '../../../../core/shared/widgets/inputs/custom_text_form_field.dart';
 import '../../../../core/utils/validator/auth_validator.dart';
 
 class LoginPage extends StatelessWidget {
