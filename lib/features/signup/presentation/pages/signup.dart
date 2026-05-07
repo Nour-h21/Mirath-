@@ -7,8 +7,8 @@ import '../../../../core/constants/strings.dart';
 import '../../../../core/design/tokens/typography.dart';
 import '../../../../core/shared/page/auth_background.dart';
 import '../../../../core/shared/widgets/buttons/auth_button.dart';
-import '../../../../core/shared/widgets/inputs/custom_text_form_field.dart';
 import '../../../../core/utils/validator/auth_validator.dart';
+import '../../../../core/shared/widgets/inputs/custom_text_form_field.dart';
 import '../widgets/dropdown_button.dart';
 
 class SignupPage extends StatefulWidget {

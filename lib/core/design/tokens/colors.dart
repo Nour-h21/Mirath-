@@ -7,4 +7,5 @@ class AppColors{
   static Color offWhite = Color(0XFFF4F5F0);
   static Color offPink = Color(0XFFC299A5);
   static Color black = Color(0XFF1F0009);
+  static Color transparent = Colors.transparent;
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mirath/core/design/tokens/colors.dart';
-import 'package:mirath/core/design/tokens/typography.dart';
+
+import '../../../design/tokens/colors.dart';
+import '../../../design/tokens/typography.dart';
 
 class AuthButton extends StatelessWidget {
   final String text;
