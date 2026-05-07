@@ -32,7 +32,7 @@ class AuthButton extends StatelessWidget {
             borderRadius: BorderRadiusGeometry.circular(24),
           ),
         ),
-        child: Text(text, style: AppTextStyles.loginbuttonStyle(context)),
+        child: Text(text, style: AppTextStyles.authbuttonStyle(context)),
       ),
     );
   }

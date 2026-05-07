@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-import '../../core/config/constants.dart';
+import '../../core/constants/urls.dart';
 import '../../core/services/storage_service.dart';
 import 'injection_container.dart';
 
@@ -11,7 +11,7 @@ Future<void> initCoreModule() async {
  getIt.registerLazySingleton<Dio>((){
   final dio = Dio(
     BaseOptions(
-      baseUrl: AppConstants.baseUrl,
+      baseUrl: AppUrls.baseUrl,
       // connectTimeout: AppApi.connectTimeout,
       // receiveTimeout: AppApi.receiveTimeout,
     ),

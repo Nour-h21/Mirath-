@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../../design/theme/app_colors_extension..dart';
 
 extension ThemeX on BuildContext {
-  AppColors get colors =>
-      Theme.of(this).extension<AppColors>()!;
+  ThemeColors get colors =>
+      Theme.of(this).extension<ThemeColors>()!;
 }
 
 extension ContextSize on BuildContext {

@@ -3,13 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mirath/core/config/assets.dart';
-import 'package:mirath/core/config/strings.dart';
 import 'package:mirath/core/design/tokens/colors.dart';
 import 'package:mirath/core/design/tokens/typography.dart';
 import 'package:mirath/core/utils/extensions/context_extensions.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
+import '../../../../core/constants/assets.dart';
+import '../../../../core/constants/strings.dart';
 import '../../../../core/shared/widgets/buttons/auth_button.dart';
 import '../bloc/change_password_bloc.dart';
 import '../bloc/change_password_event.dart';
@@ -80,7 +80,7 @@ class _CheckCodeState extends State<CheckCode> {
           child: Stack(
             children: [
               Image.asset(
-                AppAssets.background,
+                AppAssets.splashScreen,
                 width: double.infinity,
                 height: double.infinity,
                 fit: BoxFit.cover,

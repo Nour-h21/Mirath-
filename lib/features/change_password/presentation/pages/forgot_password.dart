@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mirath/core/config/strings.dart';
+
 import 'package:mirath/core/utils/extensions/context_extensions.dart';
 
-import '../../../../core/config/assets.dart';
-import '../../../../core/design/tokens/colors.dart';
+import '../../../../core/constants/assets.dart';
+import '../../../../core/constants/strings.dart';
 import '../../../../core/design/tokens/typography.dart';
 import '../../../../core/shared/widgets/buttons/auth_button.dart';
 import '../../../../core/shared/widgets/inputs/custom_text_form_field.dart';
@@ -41,7 +41,7 @@ class ForgotPassword extends StatelessWidget {
           child: Stack(
             children: [
               Image.asset(
-                AppAssets.background,
+                AppAssets.splashScreen,
                 width: double.infinity,
                 height: double.infinity,
                 fit: BoxFit.cover,
@@ -77,7 +77,7 @@ class ForgotPassword extends StatelessWidget {
                           label: AppStrings.email,
                           icon: Icons.email,
                           controller: email,
-                          validator: AuthValidator.emailOrPhoneValidator,
+                          validator: AuthValidator.emailValidator,
                         ),
 
                         SizedBox(height: context.h(7)),
@@ -89,13 +89,10 @@ class ForgotPassword extends StatelessWidget {
                             if (_formKey.currentState!.validate()) {
                               context.read<ChangePasswordBloc>().add(
                                 ForgotPasswordEvent(email: email.text),
-                                
                               );
                             }
                           },
                         ),
-
-
                       ],
                     ),
                   ),
