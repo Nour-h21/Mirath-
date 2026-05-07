@@ -1,72 +1,154 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mirath/core/utils/extensions/context_extensions.dart';
+import 'package:mirath/core/utils/extensions/widget_extensions.dart';
+import '../../../../core/constants/assets.dart';
+import '../../../../core/constants/strings.dart';
 import '../../../../core/design/tokens/typography.dart';
+import '../../../../core/shared/page/auth_background.dart';
+import '../../../../core/shared/widgets/buttons/auth_button.dart';
+import '../../../../core/shared/widgets/inputs/text_field_input.dart';
+import '../../../../core/utils/validator/auth_validator.dart';
+import '../widgets/dropdown_button.dart';
 
-class ResponsiveTestPage extends StatelessWidget {
-  const ResponsiveTestPage({super.key});
+class SignupPage extends StatefulWidget {
+ const SignupPage({super.key});
+
+  @override
+  State<SignupPage> createState() => _SignupPageState();
+}
+
+class _SignupPageState extends State<SignupPage> {
+  final TextEditingController firstName = TextEditingController();
+
+  final TextEditingController secondName = TextEditingController();
+
+  final TextEditingController email = TextEditingController();
+
+  final TextEditingController password = TextEditingController();
+
+  final TextEditingController confirmPassword = TextEditingController();
+
+  final TextEditingController age = TextEditingController();
+
+  final TextEditingController nationality = TextEditingController();
+
+  List<Map<String, String>> types = [];
+
+  @override
+  void initState() {
+    super.initState();
+    types = [
+      {"id": "1", "name": "Registration Request"},
+      {"id": "2", "name": "Invoice Error"},
+      {"id": "3", "name": "Technical Malfunction"},
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Responsive Test",
-          // style: TextStyle(fontSize: context.sp(5)),
-          style: AppTextStyles.bigBeigeStyle(context),
-        ),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-
-            // 🔵 Container responsive
-            Container(
-              width: context.wp(80), // 80% من العرض
-              height: context.hp(20), // 20% من الطول
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Center(
-                child: Text(
-                  "Responsive Box",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: context.sp(6),
-                  ),
+    return AuthBackground(
+      image: AppAssets.authbackgroun,
+      top: 13,
+      child: Column(
+        children: [
+          CustomTextFormField(
+            label: AppStrings.firstName,
+            controller: firstName,
+            icon: Icons.person,
+            validator: AuthValidator.nameValidator,
+          ),
+          CustomTextFormField(
+            label: AppStrings.secondName,
+            controller: secondName,
+            icon: Icons.person,
+            validator: AuthValidator.nameValidator,
+          ),
+          CustomTextFormField(
+            label: AppStrings.email,
+            controller: email,
+            icon: Icons.email,
+            validator: AuthValidator.emailValidator,
+          ),
+          CustomTextFormField(
+            label: AppStrings.password,
+            icon: Icons.remove_red_eye_rounded,
+            isPassword: true,
+            controller: password,
+            validator: AuthValidator.passwordValidator,
+          ),
+          CustomTextFormField(
+            label: AppStrings.confirmPassword,
+            icon: Icons.remove_red_eye_rounded,
+            isPassword: true,
+            controller: confirmPassword,
+            validator: (value) =>
+                AuthValidator.confirmPasswordValidator(value, password.text),
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: DropdownButtonField(
+                  label: "الجنسية",
+                  options: types.map((e) => e['name']!).toList(),
+                  onChanged: (String? value) {
+                    // find id by name
+                    // final found = types.firstWhere(
+                    //   (t) => t['name'] == value,
+                    // );
+                    // context
+                    //     .read<AddComplaintBloc>()
+                    //     .add(
+                    //       AddComplaintTypeSelected(
+                    //         found['id']!,
+                    //       ),
+                    //     );
+                  },
+                  validator: (v) => v == null ? "please choose the type" : null,
                 ),
               ),
-            ),
+              SizedBox(width: context.w(1.5)),
+              Expanded(
+                child: CustomTextFormField(
+                  label: AppStrings.age,
+                  controller: age,
+                  validator: AuthValidator.ageValidator,
+                  keyboardType: TextInputType.number,
+                ).paddingOnlytop(context, 2),
+              ),
+            ],
+          ).paddingSymetricH(context, 4.3),
 
-            SizedBox(height: context.hp(5)),
+          SizedBox(height: context.h(2.5)),
+          AuthButton(
+            text: AppStrings.signUp,
+            height: context.h(5.5),
+            width: context.w(53),
+            onPressed: () {},
+          ),
 
-            // 🟢 زر responsive
-            SizedBox(
-              width: context.wp(50),
-              height: context.hp(7),
-              child: ElevatedButton(
-                onPressed: () {},
+          SizedBox(height: context.h(1)),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+
+            children: [
+              TextButton(
+                onPressed: () {
+                  GoRouter.of(context).go('/LoginPage');
+                },
                 child: Text(
-                  "Click Me",
-                  style: TextStyle(fontSize: context.sp(5)),
+                  AppStrings.noSignUp,
+                  style: AppTextStyles.login2Style(context),
                 ),
               ),
-            ),
-
-            SizedBox(height: context.hp(5)),
-
-            // 📊 معلومات الشاشة
-            Text(
-              "Width: ${context.width.toStringAsFixed(2)}",
-              style: TextStyle(fontSize: context.sp(4)),
-            ),
-            Text(
-              "Height: ${context.height.toStringAsFixed(2)}",
-              style: TextStyle(fontSize: context.sp(4)),
-            ),
-          ],
-        ),
+              Text(
+                AppStrings.haveAccount,
+                style: AppTextStyles.login3Style(context),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

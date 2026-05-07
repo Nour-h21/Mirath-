@@ -6,7 +6,7 @@ class AppTheme {
   static ThemeData light = ThemeData(
     brightness: Brightness.light,
     extensions: const [
-      AppColors(
+      ThemeColors(
         primary: Colors.blue,
         textPrimary: Colors.black,
         background: Colors.white,
@@ -18,7 +18,7 @@ class AppTheme {
   static ThemeData dark = ThemeData(
     brightness: Brightness.dark,
     extensions: const [
-      AppColors(
+      ThemeColors(
         primary: Colors.blue,
         textPrimary: Colors.white,
         background: Colors.black,

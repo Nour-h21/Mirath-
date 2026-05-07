@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class AppColors extends ThemeExtension<AppColors> {
+class ThemeColors extends ThemeExtension<ThemeColors> {
   final Color primary;
   final Color textPrimary;
   final Color background;
   final Color card;
 
-  const AppColors({
+  const ThemeColors({
     required this.primary,
     required this.textPrimary,
     required this.background,
@@ -14,13 +14,13 @@ class AppColors extends ThemeExtension<AppColors> {
   });
 
   @override
-  AppColors copyWith({
+  ThemeColors copyWith({
     Color? primary,
     Color? textPrimary,
     Color? background,
     Color? card,
   }) {
-    return AppColors(
+    return ThemeColors(
       primary: primary ?? this.primary,
       textPrimary: textPrimary ?? this.textPrimary,
       background: background ?? this.background,
@@ -29,7 +29,7 @@ class AppColors extends ThemeExtension<AppColors> {
   }
   
   @override
-  ThemeExtension<AppColors> lerp(covariant ThemeExtension<AppColors>? other, double t) {
+  ThemeExtension<ThemeColors> lerp(covariant ThemeExtension<ThemeColors>? other, double t) {
     throw UnimplementedError();
   }
 }

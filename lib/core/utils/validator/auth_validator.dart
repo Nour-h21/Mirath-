@@ -2,18 +2,18 @@ class AuthValidator {
 
    static String? nameValidator(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return "requierd name";
+      return "الرجاء إدخال الاسم";
     }
 
     value = value.trim();
 
     if (value.length < 3) {
-      return "the name must be add least 3 letters";
+      return "يجب أن يحتوي الاسم على 3 حروف على الأقل";
     }
 
     final nameRegex = RegExp(r'^[a-zA-Z\u0600-\u06FF\s]+$');
     if (!nameRegex.hasMatch(value)) {
-      return "the name must be contain only letters";
+      return "يجب أن يحتوي الاسم على أحرف فقط";
     }
 
     return null; 
@@ -21,9 +21,41 @@ class AuthValidator {
 
 
 
-   static String? emailOrPhoneValidator(String? value) {
+// age
+static String? ageValidator(String? value) {
+  if (value == null || value.trim().isEmpty) {
+    return "الرجاء إدخال العمر";
+  }
+
+  value = value.trim();
+
+  // تحقق إنه رقم فقط
+  final age = int.tryParse(value);
+  if (age == null) {
+    return " يجب أن يكون رقمًا صحيحًا";
+  }
+
+  // تحقق منطقي
+  if (age < 1) {
+    return "العمر غير صالح";
+  }
+
+  if (age < 13) {
+    return "يجب أن يكون العمر 13 سنة على الأقل";
+  }
+
+  if (age > 120) {
+    return "العمر المدخل غير منطقي";
+  }
+
+  return null;
+}  
+
+
+// Email Validator
+   static String? emailValidator(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return "this field is requierd";
+      return "الرجاء إدخال البريد الإلكتروني";
     }
 
     value = value.trim();
@@ -34,11 +66,11 @@ class AuthValidator {
       );
 
       if (!emailRegex.hasMatch(value)) {
-        return "email is incorrect";
+        return "البريد الإلكتروني غير صحيح";
       }
 
       if (value.split('@')[1].split('.').first.length < 2) {
-        return "the domain name in the email is invalid (@) ";
+        return "اسم النطاق في البريد الإلكتروني غير صالح. (@) ";
       }
 
       return null;
@@ -51,9 +83,9 @@ class AuthValidator {
     // if (value.startsWith("+963")) {
     //   value = value.replaceFirst("+963", "0");
     // }
-        if (!value.startsWith("+963")) {
-    return "you must enter the mobile number with the code +963";
-  }
+  //       if (!value.startsWith("+963")) {
+  //   return "you must enter the mobile number with the code +963";
+  // }
     // if (value.startsWith("963")) {
     //   value = value.replaceFirst("963", "0");
     // }
@@ -68,13 +100,16 @@ class AuthValidator {
   }
 
 
+
+// password
+
   static String? passwordValidator(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return "requierd password";
+      return "الرجاء إدخال كلمة المرور";
     }
 
     if (value.length < 8) {
-      return "the password must be ad least 8 charecters";
+      return "يجب أن تكون كلمة المرور على الأقل ٨ أحرف أو أرقام";
     }
 
     // final regex = RegExp(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$');
@@ -89,11 +124,11 @@ class AuthValidator {
 
   static String? confirmPasswordValidator(String? value, String passwordValue) {
     if (value == null || value.trim().isEmpty) {
-      return "you must confirm the password";
+      return "يجب تأكيد كلمة المرور";
     }
 
     if (value != passwordValue) {
-      return "password dose not match";
+      return "كلمة المرور غير مطابقة";
     }
 
     return null;
