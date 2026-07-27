@@ -23,6 +23,7 @@ dio.interceptors.add(
       // Endpoints لا تحتاج توكن
       const authFreeEndpoints = [
         "register",
+        "getNationalities",
         "signin",
         "userForgotPassword",
         "userResetPassword",
@@ -34,13 +35,13 @@ dio.interceptors.add(
         return handler.next(options);
       }
 final storage = getIt<StorageService>();
-      // غير هيك → نضيف التوكن
+      // // غير هيك → نضيف التوكن
       final token = await storage.getToken();
       print("ppppppppppppppppppppppppppppppppppppppppppppp${token}");
       if (token != null && token.isNotEmpty) {
         
        options.headers['Authorization'] = 'Bearer $token';
-        // options.headers['Authorization'] = 'Bearer 1|MnRE2dCMFGRQWPXh4BfUWYDJKK1ez1dva4LDneN07463b92e';
+        // options.headers['Authorization'] = 'Bearer 2|AlbuRlyK02J6EoQMmiB4dTYWXUnlSCSq1i2VCAOS27c6b6b7';
       }
 
       return handler.next(options);

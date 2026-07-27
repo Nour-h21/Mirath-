@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mirath/core/core.dart';
 import 'package:mirath/core/utils/extensions/context_extensions.dart';
 import 'package:mirath/core/utils/extensions/widget_extensions.dart';
+
+import '../../../../app/di/cart_module.dart';
 import '../../../../core/constants/assets.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/design/tokens/typography.dart';
@@ -9,10 +13,17 @@ import '../../../../core/shared/page/auth_background.dart';
 import '../../../../core/shared/widgets/buttons/auth_button.dart';
 import '../../../../core/utils/validator/auth_validator.dart';
 import '../../../../core/shared/widgets/inputs/custom_text_form_field.dart';
+import '../../../notifications/presentation/bloc/notifications_bloc.dart';
+import '../../../notifications/presentation/bloc/notifications_event.dart';
+import '../bloc/Nationality/nationality_bloc.dart';
+import '../bloc/Nationality/nationality_state.dart';
+import '../bloc/signup/signup_bloc.dart';
+import '../bloc/signup/signup_event.dart';
+import '../bloc/signup/signup_state.dart';
 import '../widgets/dropdown_button.dart';
 
 class SignupPage extends StatefulWidget {
- const SignupPage({super.key});
+  const SignupPage({super.key});
 
   @override
   State<SignupPage> createState() => _SignupPageState();
@@ -31,124 +42,185 @@ class _SignupPageState extends State<SignupPage> {
 
   final TextEditingController age = TextEditingController();
 
-  final TextEditingController nationality = TextEditingController();
+  int? selectedNationalityId;
 
-  List<Map<String, String>> types = [];
-
-  @override
-  void initState() {
-    super.initState();
-    types = [
-      {"id": "1", "name": "Registration Request"},
-      {"id": "2", "name": "Invoice Error"},
-      {"id": "3", "name": "Technical Malfunction"},
-    ];
-  }
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    return AuthBackground(
-      image: AppAssets.authbackgroun,
-      top: 13,
-      child: Column(
-        children: [
-          CustomTextFormField(
-            label: AppStrings.firstName,
-            controller: firstName,
-            icon: Icons.person,
-            validator: AuthValidator.nameValidator,
-          ),
-          CustomTextFormField(
-            label: AppStrings.secondName,
-            controller: secondName,
-            icon: Icons.person,
-            validator: AuthValidator.nameValidator,
-          ),
-          CustomTextFormField(
-            label: AppStrings.email,
-            controller: email,
-            icon: Icons.email,
-            validator: AuthValidator.emailValidator,
-          ),
-          CustomTextFormField(
-            label: AppStrings.password,
-            icon: Icons.remove_red_eye_rounded,
-            isPassword: true,
-            controller: password,
-            validator: AuthValidator.passwordValidator,
-          ),
-          CustomTextFormField(
-            label: AppStrings.confirmPassword,
-            icon: Icons.remove_red_eye_rounded,
-            isPassword: true,
-            controller: confirmPassword,
-            validator: (value) =>
-                AuthValidator.confirmPasswordValidator(value, password.text),
-          ),
-          Row(
+    return BlocListener<SignupBloc, SignupState>(
+      listener: (context, state) {
+        if (state is SignupLoading) {
+        } else if (state is SignupFailed) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message)));
+          print(state.message);
+        } else if (state is SignupSuccess) {
+          getIt<NotificationsBloc>().add(
+    RegisterCurrentDeviceEvent(),
+  );
+          // GoRouter.of(context).go('/home');
+         context.go("/NotificationsPage");
+        }
+      },
+      child: AuthBackground(
+        image: AppAssets.authbackgroun,
+        top: 13,
+        child: Form(
+          key: _formKey,
+          child: Column(
             children: [
-              Expanded(
-                child: DropdownButtonField(
-                  label: "الجنسية",
-                  options: types.map((e) => e['name']!).toList(),
-                  onChanged: (String? value) {
-                    // find id by name
-                    // final found = types.firstWhere(
-                    //   (t) => t['name'] == value,
-                    // );
-                    // context
-                    //     .read<AddComplaintBloc>()
-                    //     .add(
-                    //       AddComplaintTypeSelected(
-                    //         found['id']!,
-                    //       ),
-                    //     );
-                  },
-                  validator: (v) => v == null ? "please choose the type" : null,
+              CustomTextFormField(
+                label: AppStrings.firstName,
+                controller: firstName,
+                icon: Icons.person,
+                validator: AuthValidator.nameValidator,
+              ),
+              CustomTextFormField(
+                label: AppStrings.secondName,
+                controller: secondName,
+                icon: Icons.person,
+                validator: AuthValidator.nickNameValidator,
+              ),
+              CustomTextFormField(
+                label: AppStrings.email,
+                controller: email,
+                icon: Icons.email,
+                validator: AuthValidator.emailValidator,
+              ),
+              CustomTextFormField(
+                label: AppStrings.password,
+                icon: Icons.remove_red_eye_rounded,
+                isPassword: true,
+                controller: password,
+                validator: AuthValidator.passwordValidator,
+              ),
+              CustomTextFormField(
+                label: AppStrings.confirmPassword,
+                icon: Icons.remove_red_eye_rounded,
+                isPassword: true,
+                controller: confirmPassword,
+                validator: (value) => AuthValidator.confirmPasswordValidator(
+                  value,
+                  password.text,
                 ),
               ),
-              SizedBox(width: context.w(1.5)),
-              Expanded(
-                child: CustomTextFormField(
-                  label: AppStrings.age,
-                  controller: age,
-                  validator: AuthValidator.ageValidator,
-                  keyboardType: TextInputType.number,
-                ).paddingOnlytop(context, 2),
-              ),
-            ],
-          ).paddingSymetricH(context, 4.3),
+              Row(
+                children: [
+                  BlocBuilder<NationalityBloc, NationalityState>(
+                    builder: (context, state) {
+                      if (state is NationalityLoading) {
+                        return const Expanded(
+                          child: Center(child: CircularProgressIndicator()),
+                        );
+                      }
 
-          SizedBox(height: context.h(2.5)),
-          AuthButton(
-            text: AppStrings.signUp,
-            height: context.h(5.5),
-            width: context.w(53),
-            onPressed: () {},
-          ),
+                      if (state is NationalitySuccess) {
+                        return Expanded(
+                          child: DropdownButtonField(
+                            label: AppStrings.nationality,
 
-          SizedBox(height: context.h(1)),
+                            options: state.nationalities
+                                .map((e) => e.nationality)
+                                .toList(),
 
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+                            onChanged: (String? value) {
+                              final selectedNationality = state.nationalities
+                                  .firstWhere((e) => e.nationality == value);
 
-            children: [
-              TextButton(
+                              selectedNationalityId = selectedNationality.id;
+
+                              print(selectedNationalityId);
+                            },
+
+                            validator: AuthValidator.nationalityValidator,
+                          ),
+                        );
+                      }
+
+                      if (state is NationalityFailed) {
+                        return Expanded(child: Text(state.message));
+                      }
+
+                      return const SizedBox();
+                    },
+                  ),
+                  SizedBox(width: context.w(1.5)),
+                  Expanded(
+                    child: CustomTextFormField(
+                      label: AppStrings.age,
+                      controller: age,
+                      validator: AuthValidator.ageValidator,
+                      keyboardType: TextInputType.number,
+                    ).paddingOnlytop(context, 2),
+                  ),
+                ],
+              ).paddingSymetricH(context, 4.3),
+
+              SizedBox(height: context.h(2.5)),
+              AuthButton(
+                text: AppStrings.signUp,
+                height: context.h(5.5),
+                width: context.w(53),
+
                 onPressed: () {
-                  GoRouter.of(context).go('/LoginPage');
+                  if (_formKey.currentState!.validate()) {
+                    if (selectedNationalityId == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("الرجاء اختيار الجنسية")),
+                      );
+                      return;
+                    }
+
+                    final int? parsedAge = int.tryParse(age.text);
+
+                    if (parsedAge == null) {
+                      // ScaffoldMessenger.of(context).showSnackBar(
+                      //   const SnackBar(content: Text("الرجاء ادخال العمر")),
+                      // );
+                      return;
+                    }
+
+                    context.read<SignupBloc>().add(
+                      SubmitSignupEvent(
+                        name: firstName.text,
+                        nickName: secondName.text,
+                        email: email.text,
+                        age: parsedAge,
+                        nationalityId: selectedNationalityId!,
+                        password: password.text,
+                        confirmPassword: confirmPassword.text,
+                      ),
+                    );
+                  }
                 },
-                child: Text(
-                  AppStrings.noSignUp,
-                  style: AppTextStyles.login2Style(context),
-                ),
               ),
-              Text(
-                AppStrings.haveAccount,
-                style: AppTextStyles.login3Style(context),
+
+              SizedBox(height: context.h(1)),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      GoRouter.of(context).go('/LoginPage');
+                    },
+                    child: Text(
+                      AppStrings.noSignUp,
+                      style: AppTextStyles.login2Style(context),
+                    ),
+                  ),
+                  Text(
+                    AppStrings.haveAccount,
+                    style: AppTextStyles.login3Style(context),
+                  ),
+                ],
               ),
             ],
           ),
-        ],
+        ),
       ),
     );
   }

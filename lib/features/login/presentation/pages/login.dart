@@ -4,6 +4,7 @@ import 'package:mirath/core/constants/strings.dart';
 import 'package:mirath/core/design/tokens/typography.dart';
 import 'package:mirath/core/utils/extensions/context_extensions.dart';
 import 'package:mirath/core/utils/extensions/widget_extensions.dart';
+import '../../../../app/routes/app_routes.dart';
 import '../../../../core/constants/assets.dart';
 import '../../../../core/design/tokens/colors.dart';
 import '../../../../core/shared/page/auth_background.dart';
@@ -43,7 +44,9 @@ class LoginPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                   GoRouter.of(context).go('/forgotPassword');
+                },
                 child: Text(
                   AppStrings.forgotPassword,
                   style: AppTextStyles.login1Style(context),
@@ -56,7 +59,7 @@ class LoginPage extends StatelessWidget {
             text: AppStrings.login,
             height: context.h(5.5),
             width: context.w(53),
-            onPressed: () {},
+            onPressed: () { context.push("/educational-profile");},
           ),
 
           SizedBox(height: context.h(3)),

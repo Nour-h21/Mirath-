@@ -7,6 +7,25 @@ class AuthValidator {
 
     value = value.trim();
 
+    if (value.length < 2) {
+      return "يجب أن يحتوي الاسم على 2 حروف على الأقل";
+    }
+
+    final nameRegex = RegExp(r'^[a-zA-Z\u0600-\u06FF\s]+$');
+    if (!nameRegex.hasMatch(value)) {
+      return "يجب أن يحتوي الاسم على أحرف فقط";
+    }
+
+    return null; 
+  }
+
+  static String? nickNameValidator(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return "الرجاء إدخال الاسم";
+    }
+
+    value = value.trim();
+
     if (value.length < 3) {
       return "يجب أن يحتوي الاسم على 3 حروف على الأقل";
     }
@@ -21,85 +40,86 @@ class AuthValidator {
 
 
 
-// age
+
 static String? ageValidator(String? value) {
   if (value == null || value.trim().isEmpty) {
     return "الرجاء إدخال العمر";
   }
 
-  value = value.trim();
+  final trimmedValue = value.trim();
 
-  // تحقق إنه رقم فقط
-  final age = int.tryParse(value);
+  // التأكد أنه رقم
+  final age = int.tryParse(trimmedValue);
+
   if (age == null) {
-    return " يجب أن يكون رقمًا صحيحًا";
+    return "يجب إدخال رقم صحيح";
   }
 
-  // تحقق منطقي
-  if (age < 1) {
+  // منع الأرقام السالبة أو الصفر
+  if (age <= 0) {
     return "العمر غير صالح";
   }
 
+  // أقل عمر مسموح
   if (age < 13) {
     return "يجب أن يكون العمر 13 سنة على الأقل";
   }
 
+  // حد منطقي أعلى
   if (age > 120) {
     return "العمر المدخل غير منطقي";
   }
 
   return null;
-}  
+}
 
 
-// Email Validator
-   static String? emailValidator(String? value) {
-    if (value == null || value.trim().isEmpty) {
-      return "الرجاء إدخال البريد الإلكتروني";
-    }
-
-    value = value.trim();
-
-    if (value.contains('@')) {
-      final emailRegex = RegExp(
-        r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
-      );
-
-      if (!emailRegex.hasMatch(value)) {
-        return "البريد الإلكتروني غير صحيح";
-      }
-
-      if (value.split('@')[1].split('.').first.length < 2) {
-        return "اسم النطاق في البريد الإلكتروني غير صالح. (@) ";
-      }
-
-      return null;
-    }
-
-   
-
-    value = value.replaceAll(" ", "");
-
-    // if (value.startsWith("+963")) {
-    //   value = value.replaceFirst("+963", "0");
-    // }
-  //       if (!value.startsWith("+963")) {
-  //   return "you must enter the mobile number with the code +963";
-  // }
-    // if (value.startsWith("963")) {
-    //   value = value.replaceFirst("963", "0");
-    // }
-
-    // final phoneRegex = RegExp(r'^09[0-9]{8}$');
-
-    // if (!phoneRegex.hasMatch(value)) {
-    //   return "رقم الموبايل غير صحيح (مثال: +963XXXXXXXXX)";
-    // }
-
-    return null;
+static String? emailValidator(String? value) {
+  if (value == null || value.trim().isEmpty) {
+    return "الرجاء إدخال البريد الإلكتروني";
   }
 
+  value = value.trim();
 
+  // ❌ إذا المستخدم عم يكتب بس أحرف بدون @
+  if (!value.contains('@')) {
+    return "يجب كتابة البريد الالكتروني بهذه الصيغة example@gmail.com";
+  }
+
+  final emailRegex = RegExp(
+    r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+  );
+
+  if (!emailRegex.hasMatch(value)) {
+    return "يجب كتابة البريد الالكتروني بهذه الصيغة example@gmail.com";
+  }
+
+  final parts = value.split('@');
+
+  if (parts.length != 2) {
+    return "يجب كتابة البريد الالكتروني بهذه الصيغة example@gmail.com";
+  }
+
+  final domainParts = parts[1].split('.');
+
+  if (domainParts.length < 2) {
+    return "يجب كتابة البريد الالكتروني بهذه الصيغة example@gmail.com";
+  }
+
+  if (domainParts.first.length < 2) {
+    return "يجب كتابة البريد الالكتروني بهذه الصيغة example@gmail.com";
+  }
+
+  return null;
+}
+
+static String? nationalityValidator(String? value) {
+  if (value == null || value.trim().isEmpty) {
+    return "الرجاء اختيار الجنسية";
+  }
+
+  return null;
+}
 
 // password
 
