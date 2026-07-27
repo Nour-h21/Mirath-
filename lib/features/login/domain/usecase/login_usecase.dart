@@ -1,24 +1,15 @@
+import '../entities/login_entity.dart';
+import '../repositories/login_repository.dart';
 
-// import '../entities/login_entity.dart';
-// import '../repositories/login_repository.dart';
+class LoginUseCase {
+  final LoginRepository repository;
 
-// class SignupUsecase {
-//   final SignupRepository repository;
+  LoginUseCase(this.repository);
 
-//   SignupUsecase(this.repository);
-
-//   Future<SignupEntity> call({
-//     required String name,
-//     required String emailOrPhone,
-//     required String password,
-//     required String confirmPassword,
-//   }) async {
-//     return await repository.signup(
-//       name: name,
-//       emailOrPhone: emailOrPhone,
-//       password: password,
-//       confirmPassword: confirmPassword,
-//     );
-  
-//   }
-// }
+  Future<LoginEntity> call({
+    required String email,
+    required String password,
+  }) async {
+    return await repository.login(email: email, password: password);
+  }
+}

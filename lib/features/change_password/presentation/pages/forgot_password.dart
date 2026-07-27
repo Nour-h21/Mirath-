@@ -91,7 +91,7 @@ class ForgotPassword extends StatelessWidget {
                                 ForgotPasswordEvent(email: email.text),
                               );
                             }
-                          },
+                          }, textStyle: AppTextStyles.authbuttonStyle(context),
                         ),
                       ],
                     ),

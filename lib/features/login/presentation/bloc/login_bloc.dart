@@ -1,32 +1,66 @@
-// import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-// import '../../domain/usecase/login_usecase.dart';
-// import 'login_event.dart';
-// import 'login_state.dart';
+import '../../domain/usecase/google_login_usecase.dart';
+import '../../domain/usecase/login_usecase.dart';
+import 'login_event.dart';
+import 'login_state.dart';
 
+class LoginBloc extends Bloc<LoginEvent, LoginState> {
+  final LoginUseCase loginUseCase;
+  final GoogleLoginUseCase googleLoginUseCase;
 
-// class SignupBloc extends Bloc<SignupEvent, SignupState> {
-//   final SignupUsecase useCase;
+  LoginBloc(this.loginUseCase, this.googleLoginUseCase)
+    : super(LoginInitial()) {
+    on<LoginSubmitted>(_onLoginSubmitted);
 
-//   SignupBloc(this.useCase) : super(SignupInitial()) {
-//     on<SubmitSignupEvent>(_signup);
-//   }
+    on<GoogleLoginPressed>(_onGoogleLoginPressed);
+  }
 
-//   Future<void> _signup(
-//       SubmitSignupEvent event, Emitter<SignupState> emit) async {
-//     emit(SignupLoading());
+  Future<void> _onLoginSubmitted(
+    LoginSubmitted event,
+    Emitter<LoginState> emit,
+  ) async {
+    try {
+      emit(LoginLoading());
 
-//     try {
-//       final user = await useCase(
-//         name: event.name,
-//         emailOrPhone: event.emailOrPhone,
-//         password: event.password,
-//         confirmPassword: event.confirmPassword,
-//       );
-//       print(user);
-//       emit(SignupSuccess(user));
-//     } catch (e) {
-//       emit(SignupFailed(e.toString().replaceAll("Exception: ", "")));
-//     }
-//   }
-// }
+      final user = await loginUseCase(
+        email: event.email,
+        password: event.password,
+      );
+
+      emit(LoginSuccess(user));
+
+     
+    }on DioException catch (e) {
+      final message = e.response?.data['message'];
+       if (message.toString().contains('User email & password does not with our record.')) {
+        emit(LoginError("كلمة المرور غير صحيحة "));
+      } else if (message.toString().contains('you have sent invalid data')) {
+        emit(LoginError("البريد الإلكتروني غير صحيح"));
+      }
+     else{emit(LoginError("pppppppppppplll:${e.toString()}"));} 
+    }
+  }
+
+  Future<void> _onGoogleLoginPressed(
+    GoogleLoginPressed event,
+    Emitter<LoginState> emit,
+  ) async {
+    try {
+      emit(LoginLoading());
+
+      final user = await googleLoginUseCase();
+
+      emit(LoginSuccess(user));
+    } on DioException catch (e) {
+      final message = e.response?.data['message'];
+       if (message.toString().contains('Failed to verify Google JWT token: Syntax error, malformed JSON')) {
+        emit(LoginError("كلمة المرور غير صحيحة "));
+      } else if (message.toString().contains('No account found with this email. Please register first.')) {
+        emit(LoginError("هذا البريد الإلكتروني غير موجود,قم بإنشاء حساب أولاً"));
+      }
+     else{emit(LoginError("pppppppppppplll:${e.toString()}"));} 
+    }
+  }
+}

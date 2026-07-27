@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:mirath/core/design/tokens/colors.dart';
-import 'package:mirath/core/design/tokens/typography.dart';
+
+import '../../../design/tokens/colors.dart';
 
 class AuthButton extends StatelessWidget {
   final String text;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final double height;
   final double width;
+  final TextStyle textStyle;
   const AuthButton({
     super.key,
     required this.text,
     required this.onPressed,
     required this.height,
     required this.width,
+    required this.textStyle,
   });
 
   @override
@@ -31,7 +33,7 @@ class AuthButton extends StatelessWidget {
             borderRadius: BorderRadiusGeometry.circular(24),
           ),
         ),
-        child: Text(text, style: AppTextStyles.authbuttonStyle(context)),
+        child: Text(text, style: textStyle),
       ),
     );
   }

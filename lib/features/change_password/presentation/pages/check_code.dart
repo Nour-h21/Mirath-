@@ -17,7 +17,7 @@ import '../bloc/change_password_state.dart';
 
 class CheckCode extends StatefulWidget {
   final String email;
-  CheckCode({super.key, required this.email});
+  const CheckCode({super.key, required this.email});
 
   @override
   State<CheckCode> createState() => _CheckCodeState();
@@ -178,7 +178,7 @@ class _CheckCodeState extends State<CheckCode> {
                                 ),
                               );
                             }
-                          },
+                          }, textStyle: AppTextStyles.authbuttonStyle(context),
                         ),
 
                         SizedBox(height: context.h(2)),

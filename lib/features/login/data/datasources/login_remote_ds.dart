@@ -1,43 +1,103 @@
-// import 'package:dio/dio.dart';
-// import '../../../../app/di/injection_container.dart';
-// import '../../../../core/services/storage_service.dart';
-// import '../models/login_model.dart';
+import 'package:dio/dio.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:mirath/features/login/data/models/login_model.dart';
 
-// abstract class SignupRemoteDs {
-//   Future<SignupModel> signup(Map<String, dynamic> body);
-// }
+import '../../../../app/di/injection_container.dart';
+import '../../../../core/services/storage_service.dart';
 
-// class SignupRemoteDsImpl implements SignupRemoteDs {
-//   final Dio dio;
+abstract class LoginRemoteDs {
+  Future<LoginModel> login({required String email, required String password});
 
-//   SignupRemoteDsImpl(this.dio);
+  Future<LoginModel> loginWithGoogle();
+}
 
-//   @override
-//   Future<SignupModel> signup(Map<String, dynamic> body) async {
-//     try {
-//       final response = await dio.post("register", data: body);
-//       print(SignupModel.fromJson(response.data));
-//       final storage = getIt<StorageService>();
+class LoginRemoteDsImpl implements LoginRemoteDs {
+  final Dio dio;
 
-//       await storage.saveToken(response.data["data"]["id"].toString());
-//       // final userId = await storage.getUserId();
-//       await storage.saveUserId(response.data["data"]["id"].toString());
-//       final userId = await storage.getUserId();
-//       // final userId = await StorageService.getUserId();
-//       print("id = $userId");
+  LoginRemoteDsImpl(this.dio);
 
-//       // getIt<FcmTokenHandler>().init(userId!);
-//       return SignupModel.fromJson(response.data);
-//     } catch (e, stackTrace) {
-//       if (e is DioException) {
-//         print("🔥 DIO ERROR: ${e.response?.data}");
-//         print("🔥 STATUS CODE: ${e.response?.statusCode}");
-//         print("🔥 MESSAGE: ${e.message}");
-//       } else {
-//         print("🔥 OTHER ERROR: $e");
-//         print("🔥 StackTrace: $stackTrace");
-//       }
-//       rethrow;
-//     }
-//   }
-// }
+  @override
+  Future<LoginModel> login({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final response = await dio.post(
+        "signin",
+
+        data: {'email': email, 'password': password},
+      );
+
+      print(response.data);
+      final loginModel = LoginModel.fromJson(response.data);
+      print({"hiiiihhhmmmmmmmmmmmkkkkkk": loginModel.token});
+      final storage = getIt<StorageService>();
+      storage.saveToken(loginModel.token);
+      return loginModel;
+    } on DioException catch (e) {
+      print("kkkkkkkkkk:${e.message}");
+
+      rethrow;
+    }
+  }
+
+  @override
+  Future<LoginModel> loginWithGoogle() async {
+    final GoogleSignIn googleSignIn = GoogleSignIn.instance;
+
+    await googleSignIn.initialize(
+      serverClientId:
+          '921312382697-i8gsvtp6cvbcmqdgl379pau8g4lc9oo1.apps.googleusercontent.com',
+    );
+
+    final GoogleSignInAccount account = await googleSignIn.authenticate();
+
+    final GoogleSignInAuthentication auth = account.authentication;
+
+    try {
+      final response = await dio.post(
+        'authGoogle',
+
+        data: {'id_token': auth.idToken},
+      );
+
+      // return LoginModel.fromJson(response.data);
+      final loginModel = LoginModel.fromJson(response.data);
+      print({"hiiiihhhmmmmmmmmmmmkkkkkk": loginModel.token});
+      final token = loginModel.token;
+      print({"TTTTTTTTTTTTTTTT": token});
+      final storage = getIt<StorageService>();
+      storage.saveToken(token);
+
+      return loginModel;
+    } on DioException catch (e) {
+      print({"hiiiihhhhhhhhkkkkkkkkkkkkkkkkkkkkk": auth.idToken});
+      print(e.message);
+
+      rethrow;
+    }
+  }
+
+  //   @override
+  //   Future<LoginModel> loginWithGoogle() async {
+
+  //     final GoogleSignIn googleSignIn = GoogleSignIn.instance;
+
+  //     final GoogleSignInAccount? account = await googleSignIn.signIn();
+
+  //     if (account == null) {
+  //       throw Exception('Cancelled');
+  //     }
+
+  //     final auth = await account.authentication;
+
+  //     print(auth.idToken);
+
+  //     final response = await dio.post('authGoogle', data: {'id_token':auth.idToken });
+
+  //     return LoginModel.fromJson(response.data);
+  //   }
+
+  //   final GoogleSignIn googleSignIn =
+  //     GoogleSignIn.instance;
+}

@@ -1,10 +1,7 @@
-// import '../entities/login_entity.dart';
+import '../entities/login_entity.dart';
 
-// abstract class SignupRepository {
-//   Future<SignupEntity> signup({
-//     required String name,
-//     required String emailOrPhone,
-//     required String password,
-//     required String confirmPassword,
-//   });
-// }
+abstract class LoginRepository {
+  Future<LoginEntity> login({required String email, required String password});
+
+  Future<LoginEntity> loginWithGoogle();
+}

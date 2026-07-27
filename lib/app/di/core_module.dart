@@ -5,18 +5,33 @@ import '../../core/services/storage_service.dart';
 import 'injection_container.dart';
 
 Future<void> initCoreModule() async {
+  // getIt.registerSingleton(await SharedPreferences.getInstance());
 
-// getIt.registerSingleton(await SharedPreferences.getInstance());
+  getIt.registerLazySingleton<Dio>(() {
+    final dio = Dio(
+      BaseOptions(
+        baseUrl: AppUrls.baseUrl,
+        connectTimeout: Duration(seconds: 20),
+        receiveTimeout: Duration(seconds: 20),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+        },
+      ),
+    );
 
- getIt.registerLazySingleton<Dio>((){
-  final dio = Dio(
-    BaseOptions(
-      baseUrl: AppUrls.baseUrl,
-      // connectTimeout: AppApi.connectTimeout,
-      // receiveTimeout: AppApi.receiveTimeout,
-    ),
-  );
-
+    dio.interceptors.add(
+      InterceptorsWrapper(
+        onRequest: (options, handler) async {
+          // Endpoints لا تحتاج توكن
+          const authFreeEndpoints = [
+            "register",
+            "signin",
+            "authGoogle",
+            "userForgotPassword",
+            "userResetPassword",
+            "userCheckCode",
+          ];
 dio.interceptors.add(
   InterceptorsWrapper(
     onRequest: (options, handler) async {
@@ -30,6 +45,7 @@ dio.interceptors.add(
         "userCheckCode",
       ];
 
+         
       // إذا الـ endpoint موجود ضمن القائمة → ما نضيف توكن
       if (authFreeEndpoints.any((e) => options.path.contains(e))) {
         return handler.next(options);
@@ -44,13 +60,10 @@ final storage = getIt<StorageService>();
         // options.headers['Authorization'] = 'Bearer 2|AlbuRlyK02J6EoQMmiB4dTYWXUnlSCSq1i2VCAOS27c6b6b7';
       }
 
-      return handler.next(options);
-    },
-  ),
-
-
-);
-  return dio;
-});
-
+          return handler.next(options);
+        },
+      ),
+    );
+    return dio;
+  });
 }

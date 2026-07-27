@@ -1,6 +1,6 @@
 class AppStrings {
-  static String firstName = 'الاسم';
-  static String secondName = 'الكنية';
+  static String firstName = 'الاسم الأول';
+  static String secondName = 'اسم العائلة';
   static String age = 'العمر';
   static String nationality = 'الجنسية';
   static String password = 'كلمة المرور';

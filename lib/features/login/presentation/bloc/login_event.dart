@@ -1,15 +1,14 @@
-// abstract class SignupEvent {}
+abstract class LoginEvent {}
 
-// class SubmitSignupEvent extends SignupEvent {
-//   final String name;
-//   final String emailOrPhone;
-//   final String password;
-//   final String confirmPassword;
+class LoginSubmitted extends LoginEvent {
 
-//   SubmitSignupEvent({
-//     required this.name,
-//     required this.emailOrPhone,
-//     required this.password,
-//     required this.confirmPassword,
-//   });
-// }
+  final String email;
+  final String password;
+
+  LoginSubmitted({
+    required this.email,
+    required this.password,
+  });
+}
+
+class GoogleLoginPressed extends LoginEvent {}

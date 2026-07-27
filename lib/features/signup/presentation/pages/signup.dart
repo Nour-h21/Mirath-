@@ -9,7 +9,7 @@ import '../../../../app/di/cart_module.dart';
 import '../../../../core/constants/assets.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/design/tokens/typography.dart';
-import '../../../../core/shared/page/auth_background.dart';
+import '../../../../core/shared/page/background_page.dart';
 import '../../../../core/shared/widgets/buttons/auth_button.dart';
 import '../../../../core/utils/validator/auth_validator.dart';
 import '../../../../core/shared/widgets/inputs/custom_text_form_field.dart';
