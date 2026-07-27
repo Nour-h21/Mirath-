@@ -1,15 +1,37 @@
 import 'package:get_it/get_it.dart';
+import 'package:mirath/app/di/automated_quiz_module.dart';
+import 'package:mirath/app/di/login_module.dart';
+import 'package:mirath/app/di/my_summary_module.dart';
+import 'package:mirath/app/di/summary_details_module.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/services/storage_service.dart';
+import 'analytical_study_module.dart';
+import 'books_module.dart';
 import 'change_password_module.dart';
+import 'chapter_details_module.dart';
 import 'core_module.dart';
+import 'create_summary_module.dart';
+import 'home_module.dart';
+import 'one_book_module.dart';
+import 'upload_summary_module.dart';
 
 final getIt = GetIt.instance;
 
 Future<void> init() async {
   await initCoreModule();
   await initChangePasswordModule();
+  await initLoginModule();
+  await initBooksPageModule();
+  await initOneBookPageModule();
+  await initOneChapterDetailsModule();
+  await initCreateSummaryModule();
+  await initMySummaryModule();
+  await initSummaryDetailsModule();
+  await initAutomatedQuizModule();
+  await initAnalyticalStudyModule();
+  await initUploadSummaryModule();
+  await initHomePageModule();
 }
 
 Future<void> setupDI() async {

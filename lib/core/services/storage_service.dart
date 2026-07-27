@@ -1,7 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StorageService {
-  static const String tokenKey = "user_token";
+  static const String tokenKey = "token";
   static const String userIdKey = "userId";
   static const String firstLaunchKey = "is_first_launch";
 
@@ -11,7 +11,7 @@ class StorageService {
 
   /// Save token
   Future<void> saveToken(String token) async {
-    await prefs.setString(tokenKey, token);
+    await prefs.setString(tokenKey,token);
   }
 
   /// Get token

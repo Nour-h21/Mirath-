@@ -29,7 +29,7 @@ class ChangePasswordRemoteDsImpl implements ChangePasswordRemoteDs {
   Future<CheckCodeModel> checkCode(Map<String, dynamic> body) async {
     final response = await dio.post("userCheckCode", data: body);
     final res = CheckCodeModel.fromJson(response.data);
-    print('nnnnnnnnnnnnn${res}');
+    print('nnnnnnnnnnnnn$res');
     // final code = res.code;
     return res;
   }

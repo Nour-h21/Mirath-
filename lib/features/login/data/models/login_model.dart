@@ -1,41 +1,35 @@
-// import '../../domain/entities/signup_entity.dart';
+import 'package:mirath/features/login/domain/entities/login_entity.dart';
 
-// class SignupModel extends SignupEntity {
-//   SignupModel({
-//     required super.id,
-//     required super.roleId,
-//     required super.name,
-//      super.email,
-//      super.phone,
-//     // required super.photo,
-//     required super.points,
-//      super.genderId,
-//     required super.otpCode,
-//     required super.otpExpiresAt,
-//     required super.isVerified,
-//     required super.lockedUntil,
-//     // required super.cityId,
-//     // required super.emailVerifiedAt,
-//      super.fcmToken
-//   });
+class LoginModel extends LoginEntity {
+  const LoginModel({
+    required super.id,
+    required super.roleId,
+    required super.name,
+    required super.nickName,
+    required super.email,
+    required super.age,
+    required super.nationalityId,
+    required super.photo,
+    required super.token,
+    required super.errors,
+    required super.message,
+  });
 
-//   factory SignupModel.fromJson(Map<String, dynamic> json) {
-//   final data = json["data"] as Map<String, dynamic>?;
+  factory LoginModel.fromJson(Map<String, dynamic> json) {
+    final data = json['data'];
 
-//   return SignupModel(
-//     id: data?["id"] ?? 0,
-//     roleId: data?["role_id"] ?? 0,
-//     name: (data?["name"] as String?) ?? "",   // ⭐️ الحل
-//     email: data?["email"] as String?,
-//     phone: data?["phone"] as String?,
-//     // photo: data?["photo"] ,
-//     points: data?["points"] ?? 0,
-//     genderId: data?["gender_id"]?.toString(),
-//     otpCode: data?["otp_code"] as String,
-//     otpExpiresAt: data?["otp_expires_at"] as String,
-//     isVerified: data?["is_verified"] ?? 0,
-//     fcmToken: data?["fcm_token"] as String?,
-//     lockedUntil: data?["locked_until"] as String?,
-//   );
-// }
-// }
+    return LoginModel(
+      id: data['id'],
+      roleId: data['role_id'],
+      name: data['name'],
+      nickName: data['nick_name'],
+      email: data['email'],
+      age: data['age'],
+      nationalityId: data['nationality_id'],
+      photo: data['photo'],
+      token: data['token'],
+      message: data['message'],
+      errors: data['errors'],
+    );
+  }
+}

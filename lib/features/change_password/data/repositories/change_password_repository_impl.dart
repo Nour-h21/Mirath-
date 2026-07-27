@@ -15,7 +15,7 @@ class ChangePasswordRepositoryImpl implements ChangePasswordRepository {
     try {
       final body = {"email": email};
 
-      print('$email');
+      print(email);
       return await remote.forgotPassword(body);
     } on DioException catch (e) {
 final responseData = e.response?.data;

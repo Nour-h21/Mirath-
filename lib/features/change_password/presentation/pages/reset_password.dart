@@ -109,7 +109,7 @@ class ResetPassword extends StatelessWidget {
                                 ),
                               );
                             }
-                          },
+                          }, textStyle: AppTextStyles.authbuttonStyle(context),
                         ),
                         // GradientElevatedButton1(
                         //   onPressed: () {

@@ -1,59 +1,22 @@
-// import '../../domain/entities/signup_entity.dart';
-// import '../../domain/repositories/signup_repository.dart';
-// import '../datasources/signup_remote_ds.dart';
-// import 'package:dio/dio.dart';
+import '../../domain/entities/login_entity.dart';
+import '../../domain/repositories/login_repository.dart';
+import '../datasources/login_remote_ds.dart';
 
-// class SignupRepositoryImpl implements SignupRepository {
-//   final SignupRemoteDs remote;
+class LoginRepositoryImpl extends LoginRepository {
+  final LoginRemoteDs remoteDataSource;
 
-//   SignupRepositoryImpl(this.remote);
+  LoginRepositoryImpl(this.remoteDataSource);
 
-//   @override
-//   Future<SignupEntity> signup({
-//     required String name,
-//     required String emailOrPhone,
-//     required String password,
-//     required String confirmPassword,
-//   }) async {
-//     try {
-//       final body = {
-//         "name": name,
-//         "emailOrPhone": emailOrPhone,
-//         "password": password,
-//         "password_confirmation": confirmPassword,
-//       };
+  @override
+  Future<LoginEntity> login({
+    required String email,
+    required String password,
+  }) async {
+    return await remoteDataSource.login(email: email, password: password);
+  }
 
-//       print('ppppppppppppppppppppp$body');
-//       return await remote.signup(body);
-//     } on DioException catch (e) {
-//        final responseData = e.response?.data;
-  
-//   // الأولوية لـ errors إذا موجود
-//   if (responseData != null && responseData["errors"] != null) {
-//     final errors = responseData["errors"];
-//     if (errors is List && errors.isNotEmpty) {
-//       // نأخذ أول خطأ في القائمة
-//       throw Exception(errors[0].toString());
-//     }
-//   }
-  
-//   // إذا ما في errors، نجرب message
-//   final msg = responseData?["message"] ?? "An unexpected error occurred";
-  
-//       print(msg);
-//       if (msg == "الرجاء إدخال بريد إلكتروني أو رقم هاتف صحيح") {
-//         throw Exception("Please enter a valid email or phone number");
-//       }
-
-//       if (msg == "The password field confirmation does not match.") {
-//         throw Exception("The password field confirmation does not match");
-//       }
-
-//       if (msg == "The email or phone has already been taken.") {
-//         throw Exception("The email or phone has already been taken");
-//       }
-
-//       throw Exception(msg);
-//     }
-//   }
-// }
+  @override
+  Future<LoginEntity> loginWithGoogle() async {
+    return await remoteDataSource.loginWithGoogle();
+  }
+}

@@ -43,6 +43,13 @@ extension PaddingX on Widget {
       child: this,
     );
   }
+
+  Widget paddingOnlyRight(BuildContext context,double right) {
+    return Padding(
+      padding: EdgeInsets.only(right: context.h(right)),
+      child: this,
+    );
+  }
 }
 
 

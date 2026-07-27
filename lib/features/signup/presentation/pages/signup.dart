@@ -5,7 +5,7 @@ import 'package:mirath/core/utils/extensions/widget_extensions.dart';
 import '../../../../core/constants/assets.dart';
 import '../../../../core/constants/strings.dart';
 import '../../../../core/design/tokens/typography.dart';
-import '../../../../core/shared/page/auth_background.dart';
+import '../../../../core/shared/page/background_page.dart';
 import '../../../../core/shared/widgets/buttons/auth_button.dart';
 import '../../../../core/utils/validator/auth_validator.dart';
 import '../../../../core/shared/widgets/inputs/custom_text_form_field.dart';
@@ -47,9 +47,10 @@ class _SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
-    return AuthBackground(
+    return BackgroundPage(
       image: AppAssets.authbackgroun,
-      top: 13,
+      top: context.h(1.4),
+      wordImage: AppAssets.logo,
       child: Column(
         children: [
           CustomTextFormField(
@@ -124,7 +125,7 @@ class _SignupPageState extends State<SignupPage> {
             text: AppStrings.signUp,
             height: context.h(5.5),
             width: context.w(53),
-            onPressed: () {},
+            onPressed: () {}, textStyle: AppTextStyles.authbuttonStyle(context),
           ),
 
           SizedBox(height: context.h(1)),

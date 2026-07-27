@@ -6,6 +6,7 @@ import 'app/my_app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+    // SyncfusionLicense.registerLicense('');
   await setupDI();
   await di.init();
   runApp(const MyApp());

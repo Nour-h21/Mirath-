@@ -1,0 +1,83 @@
+import 'package:flutter/material.dart';
+import 'package:mirath/core/constants/assets.dart';
+import 'package:mirath/core/utils/extensions/context_extensions.dart';
+import 'package:mirath/core/utils/extensions/widget_extensions.dart';
+
+import '../../design/tokens/colors.dart';
+import '../../design/tokens/typography.dart';
+
+class InBackgroundPage extends StatelessWidget {
+  final Widget child;
+  final String labelAppBar;
+  final VoidCallback? onBackPressed;
+
+  const InBackgroundPage({
+    super.key,
+    required this.child,
+    required this.labelAppBar,
+     this.onBackPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        body: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.asset(AppAssets.inBackground, fit: BoxFit.cover),
+
+            Column(
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      height: context.h(5),
+                      width: context.w(57),
+                      decoration: BoxDecoration(
+                        color: AppColors.deepPrimaryColor.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(25),
+                        border: Border.all(
+                          color: AppColors.deepPrimaryColor,
+                          width: context.w(0.26),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          IconButton(
+                            onPressed: onBackPressed ??
+                                () {
+                                  Navigator.pop(context);
+                                },
+                            icon: Icon(
+                              Icons.arrow_back,
+                              color: AppColors.deepPrimaryColor,
+                            ),
+                          ),
+                          SizedBox(width: context.w(2)),
+                          Expanded(
+                            child: Text(
+                              labelAppBar,
+                              style: AppTextStyles.bigDeepPrimaryColorStyle(
+                                context,
+                              ).copyWith(fontSize: context.sp(4.8)),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ).paddingSymetricH(context, 2.5),
+                Expanded(child: child),
+              ],
+            ).paddingOnlytop(context, 2),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+

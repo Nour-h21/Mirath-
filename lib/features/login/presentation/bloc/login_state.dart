@@ -1,17 +1,22 @@
-// abstract class SignupState {}
+import 'package:mirath/features/login/domain/entities/login_entity.dart';
 
-// class SignupInitial extends SignupState {}
 
-// class SignupLoading extends SignupState {}
+abstract class LoginState {}
 
-// class SignupSuccess extends SignupState {
-//   final dynamic user;
+class LoginInitial extends LoginState {}
 
-//   SignupSuccess(this.user);
-// }
+class LoginLoading extends LoginState {}
 
-// class SignupFailed extends SignupState {
-//   final String message;
+class LoginSuccess extends LoginState {
 
-//   SignupFailed(this.message);
-// }
+  final LoginEntity user;
+
+  LoginSuccess(this.user);
+}
+
+class LoginError extends LoginState {
+
+  final String message;
+
+  LoginError(this.message);
+}
