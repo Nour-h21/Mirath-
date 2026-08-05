@@ -63,8 +63,8 @@ import '../../features/user_points/presentation/bloc/user_points_event.dart';
 import '../di/injection_container.dart';
 
 final GoRouter router = GoRouter(
-  initialLocation: '/LoginPage',
-  initialLocation:  "/educational-profile",
+  
+  initialLocation:  "/SignupPage",
   routes: [
     GoRoute(
       path: "/LoginPage",

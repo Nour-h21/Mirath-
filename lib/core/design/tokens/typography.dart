@@ -433,7 +433,6 @@ static TextStyle cartAvailablePoints(BuildContext context) => TextStyle(
       fontWeight: FontWeight.w600,
       fontFamily: 'Tajawal',
     );
-}
 
   static TextStyle bigDeepPrimaryColorStyle(BuildContext context) {
     return TextStyle(

@@ -93,6 +93,7 @@ class _AmountBottomSheetState extends State<AmountBottomSheet> {
 
           Center(
             child: AuthButton(
+             
               text: 'حفظ',
               onPressed: () {
                 Navigator.pop(context, tempValue);

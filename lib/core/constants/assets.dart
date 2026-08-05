@@ -25,7 +25,7 @@ class AppAssets {
   static String prize= "assets/images/Gifts.png";
   static String certificates = "assets/images/certificate.png";
   static String books = "assets/images/books.png";
- static String inBackground = "assets/images/photo_2026-06-06_17-17-04.jpg";
+//  static String inBackground = "assets/images/photo_2026-06-06_17-17-04.jpg";
  static String profile = "assets/images/profile.png";
  static String sss = "assets/images/e6f12fdab42c501e668ae367c455ad394c18784c.png";
  static String bookAward = "assets/images/bookAward.jpg";

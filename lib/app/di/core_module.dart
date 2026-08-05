@@ -26,24 +26,13 @@ Future<void> initCoreModule() async {
           // Endpoints لا تحتاج توكن
           const authFreeEndpoints = [
             "register",
+             "getNationalities",
             "signin",
             "authGoogle",
             "userForgotPassword",
             "userResetPassword",
             "userCheckCode",
           ];
-dio.interceptors.add(
-  InterceptorsWrapper(
-    onRequest: (options, handler) async {
-      // Endpoints لا تحتاج توكن
-      const authFreeEndpoints = [
-        "register",
-        "getNationalities",
-        "signin",
-        "userForgotPassword",
-        "userResetPassword",
-        "userCheckCode",
-      ];
 
          
       // إذا الـ endpoint موجود ضمن القائمة → ما نضيف توكن

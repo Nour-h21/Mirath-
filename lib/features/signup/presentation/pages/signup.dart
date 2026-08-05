@@ -64,9 +64,10 @@ class _SignupPageState extends State<SignupPage> {
          context.go("/NotificationsPage");
         }
       },
-      child: AuthBackground(
+      child: BackgroundPage(
+        wordImage: AppAssets.logo,
         image: AppAssets.authbackgroun,
-        top: 13,
+        top: context.h(1.5),
         child: Form(
           key: _formKey,
           child: Column(
@@ -156,7 +157,7 @@ class _SignupPageState extends State<SignupPage> {
                     ).paddingOnlytop(context, 2),
                   ),
                 ],
-              ).paddingSymetricH(context, 4.3),
+              ).paddingSymetricH(context, 4.8),
 
               SizedBox(height: context.h(2.5)),
               AuthButton(
@@ -197,7 +198,7 @@ class _SignupPageState extends State<SignupPage> {
                 },
               ),
 
-              SizedBox(height: context.h(1)),
+              // SizedBox(height: context.h(1)),
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
