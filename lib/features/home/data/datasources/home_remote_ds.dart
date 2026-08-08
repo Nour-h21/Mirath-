@@ -13,7 +13,7 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
 
   @override
   Future<HomeModel> getHome() async {
-    final response = await dio.get('/getHome');
+    final response = await dio.get('getHome');
 
     return HomeModel.fromJson(response.data["data"]);
   }
