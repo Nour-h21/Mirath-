@@ -13,6 +13,8 @@ import '../../../../app/di/injection_container.dart';
 import '../../../../core/shared/page/background_page.dart';
 import '../../../../core/shared/widgets/buttons/auth_button.dart';
 import '../../../chapter_details_page/presentation/page/choose_study_way.dart';
+import '../../../notifications/presentation/bloc/notifications_bloc.dart';
+import '../../../notifications/presentation/bloc/notifications_event.dart';
 import '../bloc/home_bloc.dart';
 import '../bloc/home_state.dart';
 import '../widgets/motivation_plan_card.dart';
@@ -373,6 +375,11 @@ class HomePage extends StatelessWidget {
         }
 
         if (state is HomeSuccess) {
+  //         getIt<NotificationsBloc>().add(
+  //   RegisterCurrentDeviceEvent(),
+  // );
+          // GoRouter.of(context).go('/home');
+        
           final home = state.home;
           return Stack(
             clipBehavior: Clip.none,
@@ -418,7 +425,8 @@ class HomePage extends StatelessWidget {
                               ),
                             ),
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () {context.go("/NotificationsPage");
+        },
                               icon: Icon(
                                 Icons.notifications,
                                 color: AppColors.primaryColor,

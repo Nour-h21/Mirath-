@@ -29,7 +29,18 @@ class _DailyScheduleViewState extends State<DailyScheduleView> {
   DateTime selectedDate = DateTime.now();
 
   final Map<String, List<TaskItem>> tasks = {
-    "2026-06-20": [
+    "2026-08-20": [
+      TaskItem(
+        title: "الباب الثالث: العقد المدني",
+        subtitle: "تفسير الميسر - 15 دقيقة",
+      ),
+      TaskItem(
+        title: "حفظ 5 أحاديث جديدة",
+        subtitle: "الأربعون النووية - 20 دقيقة",
+        done: true,
+      ),
+    ],
+    "2026-08-21": [
       TaskItem(
         title: "الباب الثالث: العقد المدني",
         subtitle: "تفسير الميسر - 15 دقيقة",

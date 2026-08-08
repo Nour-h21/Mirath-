@@ -64,7 +64,7 @@ import '../di/injection_container.dart';
 
 final GoRouter router = GoRouter(
   
-  initialLocation:  "/LoginPage",
+  initialLocation:  "/SignupPage",
   routes: [
     // GoRoute(
     //   path: "/LoginPage",
@@ -79,11 +79,13 @@ final GoRouter router = GoRouter(
         return MultiBlocProvider(
           providers: [
             BlocProvider(create: (_) => getIt<SignupBloc>()),
-
+            
             BlocProvider(
               create: (_) =>
                   getIt<NationalityBloc>()..add(GetNationalitiesEvent()),
             ),
+
+            BlocProvider(create: (_) => getIt<HomeBloc>()),
           ],
           child: const SignupPage(),
         );

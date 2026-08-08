@@ -61,7 +61,7 @@ class _SignupPageState extends State<SignupPage> {
     RegisterCurrentDeviceEvent(),
   );
           // GoRouter.of(context).go('/home');
-         context.go("/NotificationsPage");
+         context.go('/NavicationBar');
         }
       },
       child: BackgroundPage(

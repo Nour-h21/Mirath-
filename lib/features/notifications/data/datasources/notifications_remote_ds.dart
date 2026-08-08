@@ -25,64 +25,51 @@ class NotificationsRemoteDataSourceImpl
     required String fcmToken,
     required String deviceType,
   }) async {
-
+    
     print('REGISTER DEVICE fcmToken: $fcmToken');
     print('REGISTER DEVICE deviceType: $deviceType');
-   try {
-  final response = await dio.post(
-    'saveDeviceToken',
-    data: {
-      'fcm_token': fcmToken,
-      'device_type': deviceType,
-    },
-  );
+    try {
+      final response = await dio.post(
+        'saveDeviceToken',
+        data: {'fcm_token': fcmToken, 'device_type': deviceType},
+      );
 
-  print('REGISTER DEVICE RESPONSE: ${response.data}');
+      print('REGISTER DEVICE RESPONSE: ${response.data}');
 
-  return RegisterDeviceModel.fromJson(response.data);
-} on DioException catch (e) {
-  print('STATUS: ${e.response?.statusCode}');
-  print('DATA: ${e.response?.data}');
-  print('BASE URL: ${dio.options.baseUrl}');
-  rethrow;
-}
+      return RegisterDeviceModel.fromJson(response.data);
+    } on DioException catch (e) {
+      print('STATUS: ${e.response?.statusCode}');
+      print('DATA: ${e.response?.data}');
+      print('BASE URL: ${dio.options.baseUrl}');
+      rethrow;
+    }
 
     // return RegisterDeviceModel.fromJson(response.data);
   }
 
 
   @override
-Future<List<NotificationModel>> getNotifications() async {
-  print('🟡 GET NOTIFICATIONS DATASOURCE STARTED');
+  Future<List<NotificationModel>> getNotifications() async {
+    print('🟡 GET NOTIFICATIONS DATASOURCE STARTED');
 
-  final storage = getIt<StorageService>();
+    final storage = getIt<StorageService>();
 
-  final userId = storage.getUserId();
+    final userId = storage.getUserId();
 
-  print('👤 USER ID: $userId');
+    print('👤 USER ID: $userId');
 
-  if (userId == null) {
-    throw Exception('User ID not found');
+    if (userId == null) {
+      throw Exception('User ID not found');
+    }
+
+    print('🌐 REQUEST URL: getNotifications/$userId');
+
+    final response = await dio.get('getNotifications/$userId');
+
+    print('📥 NOTIFICATIONS RESPONSE: ${response.data}');
+
+    final List data = response.data['data'];
+
+    return data.map((e) => NotificationModel.fromJson(e)).toList();
   }
-
-  print(
-    '🌐 REQUEST URL: getNotifications/$userId',
-  );
-
-  final response = await dio.get(
-    'getNotifications/$userId',
-  );
-
-  print(
-    '📥 NOTIFICATIONS RESPONSE: ${response.data}',
-  );
-
-  final List data = response.data['data'];
-
-  return data
-      .map(
-        (e) => NotificationModel.fromJson(e),
-      )
-      .toList();
-}
 }

@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mirath/core/shared/widgets/cards/book_card.dart';
+
 
 import '../../../../core/core.dart';
 import '../../domain/entities/revision_section_entity.dart';
@@ -14,7 +14,7 @@ class RevisionCourseCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: context.h(40),
+      height: context.h(45),
       decoration: BoxDecoration(
         color: AppColors.offWhite,
         borderRadius: BorderRadius.circular(20),
@@ -36,12 +36,23 @@ class RevisionCourseCard extends StatelessWidget {
                   top: Radius.circular(16),
                 ),
                 child: Image.network(
-                  // AppAssets.sss,
-                  course.image,
-                  height: context.h(24),
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
+  course.image,
+  fit: BoxFit.cover,
+  errorBuilder: (context, error, stackTrace) {
+    debugPrint('IMAGE URL: ${course.image}');
+    debugPrint('IMAGE ERROR: $error');
+    debugPrint('IMAGE STACK: $stackTrace');
+
+    return const Icon(Icons.error);
+  },
+)
+                // Image.network(
+                //   // AppAssets.sss,
+                //   course.image,
+                //   height: context.h(24),
+                //   width: double.infinity,
+                //   fit: BoxFit.cover,
+                // ),
               ),
 
               Positioned(
