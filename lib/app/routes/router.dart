@@ -64,14 +64,14 @@ import '../di/injection_container.dart';
 
 final GoRouter router = GoRouter(
   
-  initialLocation:  "/SignupPage",
+  initialLocation:  "/LoginPage",
   routes: [
-    GoRoute(
-      path: "/LoginPage",
-      builder: (context, state) {
-        return LoginPage();
-      },
-    ),
+    // GoRoute(
+    //   path: "/LoginPage",
+    //   builder: (context, state) {
+    //     return LoginPage();
+    //   },
+    // ),
 
     GoRoute(
       path: "/SignupPage",
