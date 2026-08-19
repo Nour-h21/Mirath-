@@ -1,13 +1,7 @@
-import 'package:flutter/widgets.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:mirath/core/design/tokens/colors.dart';
-import 'package:mirath/core/utils/extensions/context_extensions.dart';
-import 'package:mirath/core/utils/extensions/widget_extensions.dart';
 
-import '../../../../core/design/tokens/typography.dart';
-import '../../../../core/shared/page/In_background_page.dart';
+import '../../../../core/core.dart';
+
 import '../../../../core/shared/widgets/buttons/auth_button.dart';
 import '../../../../core/shared/widgets/dialogs/app_alert_dialog.dart';
 import '../bloc/automated_quiz_page_bloc.dart';
@@ -145,79 +139,77 @@ class _AutomatedQuizPageState extends State<AutomatedQuizPage>
 Widget _quizContent(BuildContext context, QuizQuestionState state) {
   return Padding(
     padding: EdgeInsets.symmetric(horizontal: context.w(4)),
-    child: SizedBox(
-      height: context.h(90),
-      child: ListView(
-        scrollDirection: Axis.vertical,
-        children: [
-          SizedBox(height: context.h(7)),
-          QuizProgressSection(
-            currentQuestion: state.answeredQuestions,
-            totalQuestions: state.totalQuestions,
-          ),
+    child: ListView(
+      children: [
+        SizedBox(height: context.h(7)),
+        QuizProgressSection(
+          currentQuestion: state.answeredQuestions,
+          totalQuestions: state.totalQuestions,
+        ),
 
-          SizedBox(height: context.h(1.5)),
+        SizedBox(height: context.h(1.5)),
 
-          Stack(
-            alignment: Alignment.center,
-            clipBehavior: Clip.none,
-            children: [
-              QuizQuestionCard(question: state.currentQuestion.questionText),
-              Padding(
-                padding: EdgeInsets.only(bottom: context.h(18)),
-                child: QuizTimerWidget(
-                  remainingTime: state.remainingTime,
-                  isWarning: state.remainingTime.inSeconds <= 120,
-                ),
+        Stack(
+          alignment: Alignment.center,
+          clipBehavior: Clip.none,
+          children: [
+            QuizQuestionCard(question: state.currentQuestion.questionText),
+            Padding(
+              padding: EdgeInsets.only(bottom: context.h(18)),
+              child: QuizTimerWidget(
+                remainingTime: state.remainingTime,
+                isWarning: state.remainingTime.inSeconds <= 120,
               ),
-            ],
-          ),
-          SizedBox(
-            height: context.h(35),
-            child: ListView.builder(
-              itemCount: state.currentQuestion.choices.length,
-
-              itemBuilder: (context, index) {
-                final choice = state.currentQuestion.choices[index];
-                return QuizAnswerCard(
-                  text: choice.text,
-                  isSelected: state.selectedChoiceId == choice.id,
-                  // isCorrect: state.correctChoiceId == choice.id,
-                  isCorrect: state.correctChoiceId != null
-                      ? state.correctChoiceId == choice.id
-                      : (state.isCorrect &&
-                            state.selectedChoiceId == choice.id),
-                  showResult: state.showAnswer,
-                  onTap: state.showAnswer
-                      ? () {}
-                      : () {
-                          context.read<QuizBloc>().add(
-                            SubmitAnswerEvent(choice.id),
-                          );
-                        },
-                );
-              },
             ),
+          ],
+        ),
+
+        SizedBox(
+          height: context.h(35),
+          child: ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: state.currentQuestion.choices.length,
+
+            itemBuilder: (context, index) {
+              final choice = state.currentQuestion.choices[index];
+              return QuizAnswerCard(
+                text: choice.text,
+                isSelected: state.selectedChoiceId == choice.id,
+                // isCorrect: state.correctChoiceId == choice.id,
+                isCorrect: state.correctChoiceId != null
+                    ? state.correctChoiceId == choice.id
+                    : (state.isCorrect && state.selectedChoiceId == choice.id),
+                showResult: state.showAnswer,
+                onTap: state.showAnswer
+                    ? () {}
+                    : () {
+                        context.read<QuizBloc>().add(
+                          SubmitAnswerEvent(choice.id),
+                        );
+                      },
+              );
+            },
           ),
+        ),
+        // SizedBox(height: context.h(0.5)),
+        if (state.showAnswer && state.explanation != null)
+          QuizExplanationCard(explanation: state.explanation!),
 
-          // SizedBox(height: context.h(0.5)),
-          if (state.showAnswer && state.explanation != null)
-            QuizExplanationCard(explanation: state.explanation!),
+        if (state.showAnswer)
+          AuthButton(
+            text: "متابعة",
+            width: context.w(60),
+            height: context.h(6),
+            onPressed: () {
+              context.read<QuizBloc>().add(const ContinueQuizEvent());
+            },
+            textStyle: AppTextStyles.authbuttonStyle(context),
+          ).paddingSymetricH(context, 18),
 
-          if (state.showAnswer)
-            AuthButton(
-              text: "متابعة",
-              width: context.w(60),
-              height: context.h(6),
-              onPressed: () {
-                context.read<QuizBloc>().add(const ContinueQuizEvent());
-              },
-              textStyle: AppTextStyles.authbuttonStyle(context),
-            ).paddingSymetricH(context, 18),
-
-          SizedBox(height: context.h(3)),
-        ],
-      ),
+        SizedBox(height: context.h(3)),
+      ],
     ),
   );
 }
+
+

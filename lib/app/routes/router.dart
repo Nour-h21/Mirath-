@@ -21,6 +21,8 @@ import '../../features/chapter_details_page/presentation/page/choose_study_way.d
 import '../../features/chapter_details_page/presentation/page/split_pdfAndAudio&summary/pdf_with_audio_page.dart';
 import '../../features/chapter_details_page/presentation/page/split_pdfAndAudio&summary/split_pdf&summary_page.dart';
 import '../../features/chapter_details_page/presentation/page/split_video&summary/split_video&summary_page.dart';
+import '../../features/group_session_page/presentation/bloc/meeting_bloc.dart';
+import '../../features/group_session_page/presentation/page/group_session_page.dart';
 import '../../features/home/presentation/bloc/home_bloc.dart';
 import '../../features/home/presentation/page/home_page.dart';
 import '../../features/home/presentation/widgets/navigation_bar.dart';
@@ -63,8 +65,7 @@ import '../../features/user_points/presentation/bloc/user_points_event.dart';
 import '../di/injection_container.dart';
 
 final GoRouter router = GoRouter(
-  
-  initialLocation:  "/SignupPage",
+  initialLocation: "/LoginPage",
   routes: [
     // GoRoute(
     //   path: "/LoginPage",
@@ -72,14 +73,13 @@ final GoRouter router = GoRouter(
     //     return LoginPage();
     //   },
     // ),
-
     GoRoute(
       path: "/SignupPage",
       builder: (context, state) {
         return MultiBlocProvider(
           providers: [
             BlocProvider(create: (_) => getIt<SignupBloc>()),
-            
+
             BlocProvider(
               create: (_) =>
                   getIt<NationalityBloc>()..add(GetNationalitiesEvent()),
@@ -130,6 +130,7 @@ final GoRouter router = GoRouter(
             BlocProvider(create: (_) => getIt<UploadSummaryBloc>()),
             BlocProvider(create: (_) => getIt<QuizBloc>()),
             BlocProvider(create: (_) => getIt<AnalyticalBloc>()),
+            BlocProvider(create: (_) => getIt<MeetingBloc>()),
           ],
           child: child,
         );
@@ -180,8 +181,13 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: '/OneBookPage',
           builder: (context, state) {
-            final bookId = state.extra as int;
-            return OneBookPage(bookId: bookId);
+            // final bookId = state.extra as int;
+            // return OneBookPage(bookId: bookId);
+            final args = state.extra as BookDetailsArgs;
+            return OneBookPage(
+              bookId: args.bookId,
+              classificationId: args.classificationId,
+            );
           },
         ),
         GoRoute(
@@ -214,6 +220,8 @@ final GoRouter router = GoRouter(
             return ChooseStudyWay(
               chapterId: args.chapterId,
               authorName: args.authorName,
+              bookId: args.bookId,
+              classificationId: args.classificationId,
             );
           },
         ),
@@ -329,6 +337,12 @@ final GoRouter router = GoRouter(
                     ..add(LoadAnalyticalQuestionsEvent(chapterId)),
               child: const AnalyticalStudyPage(),
             );
+          },
+        ),
+        GoRoute(
+          path: "/GroupSessionPage",
+          builder: (context, state) {
+            return GroupSessionPage();
           },
         ),
       ],

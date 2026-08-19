@@ -11,6 +11,7 @@ class SummaryTextFormField extends StatefulWidget {
   final Key? intkey;
   final bool readOnly;
   final FormFieldValidator<String>? validator;
+  final Color? borderColor;
 
   const SummaryTextFormField({
     super.key,
@@ -20,6 +21,7 @@ class SummaryTextFormField extends StatefulWidget {
     required this.readOnly,
     this.validator,
      this.intkey,
+     this.borderColor,
   });
 
   @override
@@ -46,14 +48,14 @@ class _SummaryTextFormFieldState extends State<SummaryTextFormField> {
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
           borderSide: BorderSide(
-            color: AppColors.lightBlack,
+            color:widget.borderColor?? AppColors.lightBlack,
             width: context.w(0.2),
           ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
           borderSide: BorderSide(
-            color: AppColors.lightBlack,
+            color:widget.borderColor?? AppColors.lightBlack,
             width: context.w(0.3),
           ),
         ),

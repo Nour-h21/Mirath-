@@ -1,11 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:mirath/core/utils/extensions/context_extensions.dart';
 
-import '../../../../core/design/tokens/colors.dart';
-import '../../../../core/design/tokens/typography.dart';
-import '../../../../core/shared/page/In_background_page.dart';
+
+import '../../../../core/core.dart';
 import '../../../../core/shared/widgets/buttons/auth_button.dart';
 import '../bloc/analytical_study_page_bloc.dart';
 import '../bloc/analytical_study_page_event.dart';
@@ -29,7 +25,7 @@ class AnalyticalStudyPage extends StatelessWidget {
         child: BlocBuilder<AnalyticalBloc, AnalyticalState>(
           builder: (context, state) {
             if (state is AnalyticalLoading) {
-              return const Center(child: CircularProgressIndicator());
+              return  Center(child: CircularProgressIndicator(color: AppColors.primaryColor,));
             }
 
             if (state is AnalyticalError) {
@@ -43,21 +39,22 @@ class AnalyticalStudyPage extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: context.w(4)),
                 child: SizedBox(
                   height: context.h(90),
-                  child: Column(
+                  child: ListView(
+                    scrollDirection: Axis.vertical,
                     children: [
                       SizedBox(height: context.h(7)),
-
+                  
                       AnalyticalProgress(
                         currentQuestion: state.currentIndex + 1,
                         totalQuestions: state.questions.length,
                       ),
-
+                  
                       SizedBox(height: context.h(1)),
-
+                  
                       AnalyticalQuestionCard(
                         question: currentQuestion.questionText,
                       ),
-
+                  
                       SizedBox(
                         width: context.w(75),
                         height: context.h(6),
@@ -86,9 +83,9 @@ class AnalyticalStudyPage extends StatelessWidget {
                           ),
                         ),
                       ),
-
+                  
                       SizedBox(height: context.h(2)),
-
+                  
                       AnimatedCrossFade(
                         duration: const Duration(milliseconds: 300),
                         crossFadeState: state.showAnswer
@@ -99,9 +96,10 @@ class AnalyticalStudyPage extends StatelessWidget {
                           answer: currentQuestion.answer,
                         ),
                       ),
-
-                      const Spacer(),
-
+                  
+                      // const Spacer(),
+                      SizedBox(height: context.h(3)),
+                  
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -117,10 +115,10 @@ class AnalyticalStudyPage extends StatelessWidget {
                               textStyle: AppTextStyles.authbuttonStyle(context),
                               width: context.w(41.5),
                             ),
-
+                  
                           if (state.currentIndex > 0)
                             SizedBox(width: context.w(3)),
-
+                  
                           if (state.currentIndex < state.questions.length - 1)
                             AuthButton(
                               text: "التالي",
@@ -135,7 +133,7 @@ class AnalyticalStudyPage extends StatelessWidget {
                             ),
                         ],
                       ),
-
+                  
                       SizedBox(height: context.h(5)),
                     ],
                   ),

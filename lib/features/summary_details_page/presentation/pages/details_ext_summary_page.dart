@@ -1,13 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:mirath/core/utils/extensions/context_extensions.dart';
-import 'package:mirath/core/utils/extensions/widget_extensions.dart';
+
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-import '../../../../core/design/tokens/colors.dart';
-import '../../../../core/design/tokens/typography.dart';
-import '../../../../core/shared/page/In_background_page.dart';
+import '../../../../core/core.dart';
+import '../../../../core/shared/page/in_background.dart';
 import '../bloc/summary_details_bloc.dart';
 import '../bloc/summary_details_state.dart';
 

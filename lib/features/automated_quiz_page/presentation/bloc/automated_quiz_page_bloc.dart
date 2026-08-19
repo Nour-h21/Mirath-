@@ -14,6 +14,7 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
   final StartQuizUseCase startQuizUseCase;
   final SubmitAnswerUseCase submitAnswerUseCase;
   final EndQuizUseCase endQuizUseCase;
+  bool isSubmittingAnswer = false;
 
   Timer? _timer;
   QuizBloc(this.startQuizUseCase, this.submitAnswerUseCase, this.endQuizUseCase)
@@ -94,6 +95,73 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     add(const EndQuizEvent());
   }
 
+  // Future<void> _submitAnswer(
+  //   SubmitAnswerEvent event,
+  //   Emitter<QuizState> emit,
+  // ) async {
+  //   if (state is! QuizQuestionState) return;
+
+  //   final currentState = state as QuizQuestionState;
+
+  //   // منع إرسال إجابة ثانية لنفس السؤال
+  //   if (currentState.showAnswer) {
+  //     return;
+  //   }
+
+  //   try {
+  //     final response = await submitAnswerUseCase(
+  //       sessionId: currentState.sessionId,
+  //       questionId: currentState.currentQuestion.id,
+  //       choiceId: event.choiceId,
+  //     );
+
+  //     /*
+  //     الحالة الأولى:
+  //     الاختبار انتهى
+  //     الباك رجع QuizResult
+  //   */
+
+  //     if (response.quizResult != null) {
+  //       _timer?.cancel();
+
+  //       emit(QuizFinished(response.quizResult!));
+
+  //       return;
+  //     }
+
+  //     /*
+  //     الحالة الثانية:
+  //     يوجد سؤال جديد
+  //   */
+
+  //     emit(
+  //       currentState.copyWith(
+  //         showAnswer: true,
+  //         selectedChoiceId: response.selectedChoiceId,
+  //         correctChoiceId: response.correctChoiceId,
+  //         isCorrect: response.isCorrect,
+  //         explanation: response.explanation,
+  //         nextQuestion: response.nextQuestion,
+  //         answeredQuestions: response.answeredQuestions,
+  //         remainingQuestions: response.remainingQuestions,
+  //       ),
+  //     );
+  //     /////
+  //     debugPrint("submit emitted");
+  //     debugPrint("selected = ${response.selectedChoiceId}");
+  //     debugPrint("correct = ${response.correctChoiceId}");
+  //     debugPrint("explanation = ${response.explanation}");
+  //     debugPrint("nextQuestion = ${response.nextQuestion?.id}");
+  //     debugPrint("quizResult = ${response.quizResult}");
+  //     /////
+  //   } on DioException catch (e) {
+  //     emit(
+  //       QuizError(e.response?.data["message"] ?? "حدث خطأ أثناء إرسال الإجابة"),
+  //     );
+  //   }
+  // }
+
+  /////
   Future<void> _submitAnswer(
     SubmitAnswerEvent event,
     Emitter<QuizState> emit,
@@ -102,10 +170,17 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
 
     final currentState = state as QuizQuestionState;
 
-    // منع إرسال إجابة ثانية لنفس السؤال
+    // منع الضغط المزدوج أو الضغط بإصبعين
+    if (isSubmittingAnswer) {
+      return;
+    }
+
+    // منع إرسال إجابة بعد إظهار النتيجة
     if (currentState.showAnswer) {
       return;
     }
+
+    isSubmittingAnswer = true;
 
     try {
       final response = await submitAnswerUseCase(
@@ -114,24 +189,44 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
         choiceId: event.choiceId,
       );
 
-      /*
-      الحالة الأولى:
-      الاختبار انتهى
-      الباك رجع QuizResult
-    */
+      // آخر سؤال
+      // if (response.quizResult != null) {
+      //   _timer?.cancel();
 
+      //   isSubmittingAnswer = false;
+
+      //   emit(
+      //     QuizFinished(response.quizResult!),
+      //   );
+
+      //   return;
+      // }
       if (response.quizResult != null) {
         _timer?.cancel();
 
-        emit(QuizFinished(response.quizResult!));
+        emit(
+          currentState.copyWith(
+            showAnswer: true,
+
+            selectedChoiceId: response.selectedChoiceId,
+            correctChoiceId: response.correctChoiceId,
+            isCorrect: response.isCorrect,
+            explanation: response.explanation,
+
+            answeredQuestions: response.answeredQuestions,
+            remainingQuestions: response.remainingQuestions,
+
+            nextQuestion: null,
+
+            // نخزن النتيجة، لكن لا نعرضها الآن
+            quizResult: response.quizResult,
+          ),
+        );
 
         return;
       }
-
-      /*
-      الحالة الثانية:
-      يوجد سؤال جديد
-    */
+      // سؤال عادي
+      isSubmittingAnswer = false;
 
       emit(
         currentState.copyWith(
@@ -145,26 +240,52 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
           remainingQuestions: response.remainingQuestions,
         ),
       );
-      /////
-      debugPrint("submit emitted");
-      debugPrint("selected = ${response.selectedChoiceId}");
-      debugPrint("correct = ${response.correctChoiceId}");
-      debugPrint("explanation = ${response.explanation}");
-      debugPrint("nextQuestion = ${response.nextQuestion?.id}");
-      debugPrint("quizResult = ${response.quizResult}");
-      /////
     } on DioException catch (e) {
+      isSubmittingAnswer = false;
+
       emit(
         QuizError(e.response?.data["message"] ?? "حدث خطأ أثناء إرسال الإجابة"),
       );
     }
   }
+  /////
+
+  // void _continueQuestion(ContinueQuizEvent event, Emitter<QuizState> emit) {
+  //   if (state is! QuizQuestionState) return;
+
+  //   final currentState = state as QuizQuestionState;
+
+  //   if (currentState.nextQuestion == null) {
+  //     return;
+  //   }
+
+  //   emit(
+  //     currentState.copyWith(
+  //       currentQuestion: currentState.nextQuestion,
+  //       nextQuestion: null,
+  //       showAnswer: false,
+  //       selectedChoiceId: null,
+  //       correctChoiceId: null,
+  //       explanation: null,
+  //     ),
+  //   );
+  // }
 
   void _continueQuestion(ContinueQuizEvent event, Emitter<QuizState> emit) {
     if (state is! QuizQuestionState) return;
 
     final currentState = state as QuizQuestionState;
 
+    // آخر سؤال
+    if (currentState.quizResult != null) {
+      _timer?.cancel();
+
+      emit(QuizFinished(currentState.quizResult!));
+
+      return;
+    }
+
+    // سؤال عادي ويوجد سؤال قادم
     if (currentState.nextQuestion == null) {
       return;
     }
@@ -172,11 +293,16 @@ class QuizBloc extends Bloc<QuizEvent, QuizState> {
     emit(
       currentState.copyWith(
         currentQuestion: currentState.nextQuestion,
+
         nextQuestion: null,
+
         showAnswer: false,
+
         selectedChoiceId: null,
         correctChoiceId: null,
         explanation: null,
+
+        quizResult: null,
       ),
     );
   }

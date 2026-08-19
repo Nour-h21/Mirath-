@@ -1,24 +1,23 @@
 import '../../domain/entities/question_entity.dart';
 import '../../domain/entities/quiz_result_entity.dart';
 
-// abstract class QuizState {
-//   const QuizState();
-// }
 
-// class QuizInitial extends QuizState {}
+const _noChange = Object();
 
-// class QuizLoading extends QuizState {}
+abstract class QuizState {
+  const QuizState();
+}
 
-// class QuizError extends QuizState {
-//   final String message;
+class QuizInitial extends QuizState {}
 
-//   const QuizError(this.message);
-// }
+class QuizLoading extends QuizState {}
 
-// ///
-// /// هاي هي الحالة يلي رح يبقى فيها التطبيق
-// /// طول فترة الاختبار.
-// ///
+class QuizError extends QuizState {
+  final String message;
+
+  const QuizError(this.message);
+}
+
 // class QuizQuestionState extends QuizState {
 //   final int sessionId;
 //   final int totalQuestions;
@@ -27,13 +26,15 @@ import '../../domain/entities/quiz_result_entity.dart';
 //   final Duration remainingTime;
 //   final QuestionEntity currentQuestion;
 
-//   /// السؤال يلي رجع مع submitAnswer
-//   /// وما رح نعرضه إلا بعد كبسة متابعة.
+//   /// السؤال القادم الذي يرجع من submitAnswer
 //   final QuestionEntity? nextQuestion;
+
 //   final bool showAnswer;
 //   final bool isCorrect;
+
 //   final int? selectedChoiceId;
 //   final int? correctChoiceId;
+
 //   final String? explanation;
 
 //   const QuizQuestionState({
@@ -58,12 +59,15 @@ import '../../domain/entities/quiz_result_entity.dart';
 //     int? remainingQuestions,
 //     Duration? remainingTime,
 //     QuestionEntity? currentQuestion,
-//     QuestionEntity? nextQuestion,
+
+//     Object? nextQuestion = _noChange,
+
 //     bool? showAnswer,
 //     bool? isCorrect,
-//     int? selectedChoiceId,
-//     int? correctChoiceId,
-//     String? explanation,
+
+//     Object? selectedChoiceId = _noChange,
+//     Object? correctChoiceId = _noChange,
+//     Object? explanation = _noChange,
 //   }) {
 //     return QuizQuestionState(
 //       sessionId: sessionId ?? this.sessionId,
@@ -72,39 +76,35 @@ import '../../domain/entities/quiz_result_entity.dart';
 //       remainingQuestions: remainingQuestions ?? this.remainingQuestions,
 //       remainingTime: remainingTime ?? this.remainingTime,
 //       currentQuestion: currentQuestion ?? this.currentQuestion,
-//       nextQuestion: nextQuestion ?? this.nextQuestion,
+
+//       nextQuestion: nextQuestion == _noChange
+//           ? this.nextQuestion
+//           : nextQuestion as QuestionEntity?,
+
 //       showAnswer: showAnswer ?? this.showAnswer,
 //       isCorrect: isCorrect ?? this.isCorrect,
-//       selectedChoiceId: selectedChoiceId,
-//       correctChoiceId: correctChoiceId,
-//       explanation: explanation,
+
+//       selectedChoiceId: selectedChoiceId == _noChange
+//           ? this.selectedChoiceId
+//           : selectedChoiceId as int?,
+
+//       correctChoiceId: correctChoiceId == _noChange
+//           ? this.correctChoiceId
+//           : correctChoiceId as int?,
+
+//       explanation: explanation == _noChange
+//           ? this.explanation
+//           : explanation as String?,
 //     );
 //   }
 // }
 
-// class QuizFinished extends QuizState {
-//   final QuizResultEntity result;
 
-//   const QuizFinished(this.result);
-// }
+class QuizFinished extends QuizState {
+  final QuizResultEntity result;
 
-
-const _noChange = Object();
-
-abstract class QuizState {
-  const QuizState();
+  const QuizFinished(this.result);
 }
-
-class QuizInitial extends QuizState {}
-
-class QuizLoading extends QuizState {}
-
-class QuizError extends QuizState {
-  final String message;
-
-  const QuizError(this.message);
-}
-
 class QuizQuestionState extends QuizState {
   final int sessionId;
   final int totalQuestions;
@@ -113,7 +113,6 @@ class QuizQuestionState extends QuizState {
   final Duration remainingTime;
   final QuestionEntity currentQuestion;
 
-  /// السؤال القادم الذي يرجع من submitAnswer
   final QuestionEntity? nextQuestion;
 
   final bool showAnswer;
@@ -121,8 +120,10 @@ class QuizQuestionState extends QuizState {
 
   final int? selectedChoiceId;
   final int? correctChoiceId;
-
   final String? explanation;
+
+  // نتيجة الاختبار إذا كان هذا آخر سؤال
+  final QuizResultEntity? quizResult;
 
   const QuizQuestionState({
     required this.sessionId,
@@ -137,57 +138,55 @@ class QuizQuestionState extends QuizState {
     this.selectedChoiceId,
     this.correctChoiceId,
     this.explanation,
+    this.quizResult,
   });
+QuizQuestionState copyWith({
+  int? sessionId,
+  int? totalQuestions,
+  int? answeredQuestions,
+  int? remainingQuestions,
+  Duration? remainingTime,
+  QuestionEntity? currentQuestion,
+  Object? nextQuestion = _noChange,
+  bool? showAnswer,
+  bool? isCorrect,
+  Object? selectedChoiceId = _noChange,
+  Object? correctChoiceId = _noChange,
+  Object? explanation = _noChange,
+  Object? quizResult = _noChange,
+}) {
+  return QuizQuestionState(
+    sessionId: sessionId ?? this.sessionId,
+    totalQuestions: totalQuestions ?? this.totalQuestions,
+    answeredQuestions: answeredQuestions ?? this.answeredQuestions,
+    remainingQuestions: remainingQuestions ?? this.remainingQuestions,
+    remainingTime: remainingTime ?? this.remainingTime,
+    currentQuestion: currentQuestion ?? this.currentQuestion,
 
-  QuizQuestionState copyWith({
-    int? sessionId,
-    int? totalQuestions,
-    int? answeredQuestions,
-    int? remainingQuestions,
-    Duration? remainingTime,
-    QuestionEntity? currentQuestion,
+    nextQuestion: nextQuestion == _noChange
+        ? this.nextQuestion
+        : nextQuestion as QuestionEntity?,
 
-    Object? nextQuestion = _noChange,
+    showAnswer: showAnswer ?? this.showAnswer,
+    isCorrect: isCorrect ?? this.isCorrect,
 
-    bool? showAnswer,
-    bool? isCorrect,
+    selectedChoiceId: selectedChoiceId == _noChange
+        ? this.selectedChoiceId
+        : selectedChoiceId as int?,
 
-    Object? selectedChoiceId = _noChange,
-    Object? correctChoiceId = _noChange,
-    Object? explanation = _noChange,
-  }) {
-    return QuizQuestionState(
-      sessionId: sessionId ?? this.sessionId,
-      totalQuestions: totalQuestions ?? this.totalQuestions,
-      answeredQuestions: answeredQuestions ?? this.answeredQuestions,
-      remainingQuestions: remainingQuestions ?? this.remainingQuestions,
-      remainingTime: remainingTime ?? this.remainingTime,
-      currentQuestion: currentQuestion ?? this.currentQuestion,
+    correctChoiceId: correctChoiceId == _noChange
+        ? this.correctChoiceId
+        : correctChoiceId as int?,
 
-      nextQuestion: nextQuestion == _noChange
-          ? this.nextQuestion
-          : nextQuestion as QuestionEntity?,
+    explanation: explanation == _noChange
+        ? this.explanation
+        : explanation as String?,
 
-      showAnswer: showAnswer ?? this.showAnswer,
-      isCorrect: isCorrect ?? this.isCorrect,
-
-      selectedChoiceId: selectedChoiceId == _noChange
-          ? this.selectedChoiceId
-          : selectedChoiceId as int?,
-
-      correctChoiceId: correctChoiceId == _noChange
-          ? this.correctChoiceId
-          : correctChoiceId as int?,
-
-      explanation: explanation == _noChange
-          ? this.explanation
-          : explanation as String?,
-    );
-  }
+    quizResult: quizResult == _noChange
+        ? this.quizResult
+        : quizResult as QuizResultEntity?,
+  );
+  
 }
 
-class QuizFinished extends QuizState {
-  final QuizResultEntity result;
-
-  const QuizFinished(this.result);
 }

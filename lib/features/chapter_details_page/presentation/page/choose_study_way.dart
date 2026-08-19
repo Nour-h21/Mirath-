@@ -1,23 +1,22 @@
 import 'dart:math';
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:mirath/core/design/tokens/colors.dart';
-import 'package:mirath/core/design/tokens/typography.dart';
-import 'package:mirath/core/shared/page/In_background_page.dart';
 import 'package:mirath/core/shared/widgets/buttons/auth_button.dart';
-import 'package:mirath/core/utils/extensions/context_extensions.dart';
-import 'package:mirath/core/utils/extensions/widget_extensions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../app/di/injection_container.dart';
+import '../../../../core/core.dart';
+import '../../../books_page/presentation/page/books_page.dart';
 
 class ChooseStudyWay extends StatefulWidget {
   final int chapterId;
   final String authorName;
+  final int bookId;
+  final int classificationId;
   const ChooseStudyWay({
     super.key,
     required this.chapterId,
     required this.authorName,
+    required this.bookId,
+    required this.classificationId,
   });
 
   @override
@@ -86,9 +85,14 @@ class _ChooseStudyWayState extends State<ChooseStudyWay> {
       child: InBackgroundPage(
         labelAppBar: 'طريقة الدراسة',
         onBackPressed: () {
-          final SharedPreferences prefs = getIt();
-          final bookId = prefs.getInt("bookId");
-          GoRouter.of(context).push('/OneBookPage', extra: bookId);
+          GoRouter.of(context).push(
+            '/OneBookPage',
+            extra: BookDetailsArgs(
+              classificationId:
+                  widget.classificationId,
+              bookId: widget.bookId,
+            ),
+          );
         },
         child: SizedBox(
           height: context.h(89),
@@ -182,7 +186,7 @@ class _ChooseStudyWayState extends State<ChooseStudyWay> {
                             AuthButton(
                               text: "ابدأ",
                               onPressed: () {
-                                final SharedPreferences prefs = getIt();
+                               final SharedPreferences prefs = getIt();
                                 prefs.setInt("chapterId", widget.chapterId);
                                 prefs.setString(
                                   "authorName",
@@ -193,8 +197,10 @@ class _ChooseStudyWayState extends State<ChooseStudyWay> {
                                   GoRouter.of(context).push(
                                     '/SplitPdfAndSummaryPage',
                                     extra: PdfPageArgs(
+                                      bookId: widget.bookId,
                                       chapterId: widget.chapterId,
                                       authorName: widget.authorName,
+                                      classificationId: widget.classificationId,
                                     ),
                                   );
                                 } else if (options[index].id == 2) {
@@ -251,5 +257,14 @@ class PdfPageArgs {
 
   final String authorName;
 
-  PdfPageArgs({required this.chapterId, required this.authorName});
+  final int bookId;
+
+  final int classificationId;
+
+  PdfPageArgs({
+    required this.chapterId,
+    required this.authorName,
+    required this.bookId,
+    required this.classificationId,
+  });
 }

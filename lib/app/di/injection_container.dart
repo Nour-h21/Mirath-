@@ -16,6 +16,7 @@ import 'change_password_module.dart';
 import 'chapter_details_module.dart';
 import 'core_module.dart';
 import 'create_summary_module.dart';
+import 'group_session_page_module.dart';
 import 'home_module.dart';
 import 'one_book_module.dart';
 import 'upload_summary_module.dart';
@@ -51,6 +52,7 @@ Future<void> init() async {
   await initUserPointsModule();
   await initAiChatModule();
   await initNotificationsModule();
+  await initGroupSessionPageModule();
 }
 
 Future<void> setupDI() async {

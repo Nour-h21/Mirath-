@@ -161,7 +161,7 @@ class InternalSummaryCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           Text(
-                            "آخر تعديل :  ",
+                            "آخر تعديل:  ",
                             style: AppTextStyles.smallBlack54Style(
                               context,
                             ).copyWith(fontSize: context.sp(3.2)),

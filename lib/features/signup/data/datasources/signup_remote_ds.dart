@@ -20,11 +20,13 @@ class SignupRemoteDsImpl implements SignupRemoteDs {
       final storage = getIt<StorageService>();
       final res = SignupModel.fromJson(response.data);
       storage.saveToken(res.token);
+      storage.saveUserName(res.name);
 
       // final userId = await storage.getUserId();
       await storage.saveUserId(response.data["data"]["id"].toString());
       final userId = storage.getUserId();
       final token = storage.getToken();
+      
 
       print("id = $userId");
       print("id = $token");

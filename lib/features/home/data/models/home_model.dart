@@ -1,3 +1,5 @@
+import 'package:mirath/features/home/data/models/plan_progress_model.dart';
+
 import '../../domain/entities/home_entity.dart';
 import 'classification_model.dart';
 import 'continue_reading_model.dart';
@@ -8,6 +10,7 @@ class HomeModel extends HomeEntity {
     required super.continueReading,
     required super.classifications,
     required super.features,
+    required super.planProgress,
   });
 
   // factory HomeModel.fromJson(Map<String, dynamic> json) {
@@ -27,6 +30,7 @@ class HomeModel extends HomeEntity {
   factory HomeModel.fromJson(Map<String, dynamic> json) {
     final continueReadingJson =
         json["continue_reading"] as Map<String, dynamic>?;
+    final planProgressJson = json["plan"] as Map<String, dynamic>?;
 
     return HomeModel(
       continueReading:
@@ -42,6 +46,11 @@ class HomeModel extends HomeEntity {
       features: (json["features"] as List)
           .map((e) => FeatureModel.fromJson(e))
           .toList(),
+
+      planProgress:
+          planProgressJson == null || planProgressJson["percentage"] == null
+          ? null
+          : PlanProgressModel.fromJson(planProgressJson),
     );
   }
 }

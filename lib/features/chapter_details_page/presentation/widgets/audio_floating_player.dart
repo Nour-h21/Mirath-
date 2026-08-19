@@ -271,12 +271,14 @@ class AudioFloatingPlayer extends StatefulWidget {
   final String audioUrl;
   final double progress;
   final int chapterId;
+  final ValueChanged<double>? onProgressChanged;
 
   const AudioFloatingPlayer({
     super.key,
     required this.audioUrl,
     required this.progress,
     required this.chapterId,
+    this.onProgressChanged,
   });
 
   @override
@@ -293,6 +295,7 @@ class _AudioFloatingPlayerState extends State<AudioFloatingPlayer> {
   int lastSavedSecond = 0;
 
   late StreamSubscription<Duration> _positionSubscription;
+
 
   @override
   void initState() {
@@ -321,12 +324,7 @@ class _AudioFloatingPlayerState extends State<AudioFloatingPlayer> {
 
   Future<void> _initAudio() async {
     try {
-      // await _player.setUrl(
-      //   widget.audioUrl,
-      // );
-      await _player.setUrl(
-        "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-      );
+      await _player.setUrl(widget.audioUrl);
 
       /// رجع الصوت من مكان التقدم
       await _player.seek(Duration(seconds: widget.progress.toInt()));
@@ -335,18 +333,28 @@ class _AudioFloatingPlayerState extends State<AudioFloatingPlayer> {
     }
   }
 
+  //NEW 18/8
+
+ void saveCurrentProgress() {
+  final currentPosition = _player.position.inSeconds;
+
+  if (currentPosition > 0) {
+    widget.onProgressChanged?.call(currentPosition.toDouble());
+  }
+} 
+///
   @override
   void dispose() {
-    /// حفظ آخر ثانية قبل الخروج
-    final currentPosition = _player.position.inSeconds;
-    if (currentPosition > 0) {
-      chapterBloc.add(
-        UpdateProgressEvent(
-          chapterId: widget.chapterId,
-          progress: currentPosition.toDouble(),
-        ),
-      );
-    }
+    // /// حفظ آخر ثانية قبل الخروج
+    // final currentPosition = _player.position.inSeconds;
+    // if (currentPosition > 0) {
+    //   chapterBloc.add(
+    //     UpdateProgressEvent(
+    //       chapterId: widget.chapterId,
+    //       progress: currentPosition.toDouble(),
+    //     ),
+    //   );
+    // }
     _positionSubscription.cancel();
 
     _player.dispose();
@@ -381,6 +389,7 @@ class _AudioFloatingPlayerState extends State<AudioFloatingPlayer> {
       setState(() {});
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<PlayerState>(

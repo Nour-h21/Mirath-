@@ -63,9 +63,7 @@ class SubjectCard extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () {
-                  // Handle the tap event here
-                },
+                onTap: onTap,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [

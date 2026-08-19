@@ -1,22 +1,17 @@
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:mirath/core/constants/assets.dart';
-import 'package:mirath/core/shared/page/In_background_page.dart';
-import 'package:mirath/core/utils/extensions/context_extensions.dart';
-import 'package:mirath/core/utils/extensions/widget_extensions.dart';
 import 'package:mirath/features/automated_quiz_page/domain/entities/quiz_result_entity.dart';
 import 'package:mirath/features/automated_quiz_page/presentation/widgets/quiz_result_form.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../app/di/injection_container.dart';
-import '../../../../core/design/tokens/colors.dart';
-import '../../../../core/design/tokens/typography.dart';
+import '../../../../core/core.dart';
 import '../../../../core/shared/widgets/buttons/auth_button.dart';
 import '../../../../core/shared/widgets/buttons/cancle_button.dart';
+import '../../../books_page/presentation/page/books_page.dart';
 import '../../../chapter_details_page/presentation/page/choose_study_way.dart';
 
-final SharedPreferences prefs = getIt();
-final bookId = prefs.getInt("bookId");
+// final SharedPreferences prefs = getIt();
+// final bookId = prefs.getInt("bookId");
+// final classificationId = prefs.getInt("classifId");///this the setInt in home page
 
 class MiddelQuizResult extends StatelessWidget {
   final QuizResultEntity result;
@@ -25,12 +20,23 @@ class MiddelQuizResult extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final SharedPreferences prefs = getIt();
+    final bookId = prefs.getInt("bookId");
+    final classificationId = prefs.getInt("classifId");
+
+    ///this the setInt in home page
     return Directionality(
       textDirection: TextDirection.rtl,
       child: InBackgroundPage(
         labelAppBar: 'نتيجة الاختبار',
         onBackPressed: () {
-          GoRouter.of(context).pushReplacement('/OneBookPage', extra: bookId);
+          GoRouter.of(context).pushReplacement(
+            '/OneBookPage',
+            extra: BookDetailsArgs(
+              classificationId: classificationId!,
+              bookId: bookId!,
+            ),
+          );
         },
         child: SizedBox(
           height: context.h(100),
@@ -52,12 +58,13 @@ class MiddelQuizResult extends StatelessWidget {
                 width: context.w(60),
                 height: context.h(6),
                 onPressed: () async {
-                  final bookId = prefs.getInt("bookId");
-
-                  await prefs.remove("bookId");
-                  GoRouter.of(
-                    context,
-                  ).pushReplacement('/OneBookPage', extra: bookId);
+                  GoRouter.of(context).pushReplacement(
+                    '/OneBookPage',
+                    extra: BookDetailsArgs(
+                      classificationId: classificationId!,
+                      bookId: bookId!,
+                    ),
+                  );
                 },
                 textStyle: AppTextStyles.authbuttonStyle(context),
               ).paddingSymetricH(context, 18),
@@ -75,12 +82,22 @@ class HightQuizResult extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final SharedPreferences prefs = getIt();
+    final bookId = prefs.getInt("bookId");
+    final classificationId = prefs.getInt("classifId");
+
     return Directionality(
       textDirection: TextDirection.rtl,
       child: InBackgroundPage(
         labelAppBar: 'نتيجة الاختبار',
         onBackPressed: () {
-          GoRouter.of(context).pushReplacement('/OneBookPage', extra: bookId);
+          GoRouter.of(context).pushReplacement(
+            '/OneBookPage',
+            extra: BookDetailsArgs(
+              classificationId: classificationId!,
+              bookId: bookId!,
+            ),
+          );
         },
         child: SizedBox(
           height: context.h(100),
@@ -101,15 +118,13 @@ class HightQuizResult extends StatelessWidget {
                 width: context.w(60),
                 height: context.h(6),
                 onPressed: () async {
-                  final bookId = prefs.getInt("bookId");
-
-                  print("bbbbbbbbbbbb:$bookId");
-                  await prefs.remove("bookId");
-                  print("aaaaaaaaaaaaaaa:$bookId");
-
-                  GoRouter.of(
-                    context,
-                  ).pushReplacement('/OneBookPage', extra: bookId);
+                  GoRouter.of(context).pushReplacement(
+                    '/OneBookPage',
+                    extra: BookDetailsArgs(
+                      classificationId: classificationId!,
+                      bookId: bookId!,
+                    ),
+                  );
                   print("xxxxxxxxxxxxxxxxx:$bookId");
                 },
                 textStyle: AppTextStyles.authbuttonStyle(context),
@@ -129,12 +144,22 @@ class HightQuizResultWithPoint extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final SharedPreferences prefs = getIt();
+    final bookId = prefs.getInt("bookId");
+    final classificationId = prefs.getInt("classifId");
+
     return Directionality(
       textDirection: TextDirection.rtl,
       child: InBackgroundPage(
         labelAppBar: 'نتيجة الاختبار',
         onBackPressed: () {
-          GoRouter.of(context).pushReplacement('/OneBookPage', extra: bookId);
+          GoRouter.of(context).pushReplacement(
+            '/OneBookPage',
+            extra: BookDetailsArgs(
+              classificationId: classificationId!,
+              bookId: bookId!,
+            ),
+          );
         },
         child: SizedBox(
           height: context.h(100),
@@ -223,14 +248,19 @@ class HightQuizResultWithPoint extends StatelessWidget {
                 width: context.w(60),
                 height: context.h(6),
                 onPressed: () async {
-                  final bookId = prefs.getInt("bookId");
+                  // final bookId = prefs.getInt("bookId");
 
-                  await prefs.remove("bookId");
+                  // await prefs.remove("bookId");
+                  // await prefs.remove("classifId");
+                  // final classificationId = prefs.getInt("classifId");
 
-                  
-                  GoRouter.of(
-                    context,
-                  ).pushReplacement('/OneBookPage', extra: bookId);
+                  GoRouter.of(context).pushReplacement(
+                    '/OneBookPage',
+                    extra: BookDetailsArgs(
+                      classificationId: classificationId!,
+                      bookId: bookId!,
+                    ),
+                  );
                   Navigator.of(context).pop();
                 },
                 textStyle: AppTextStyles.authbuttonStyle(context),
@@ -250,6 +280,11 @@ class FailingQuizResult extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final SharedPreferences prefs = getIt();
+    final bookId = prefs.getInt("bookId");
+    final classificationId = prefs.getInt("classifId");
+    final chapterId = prefs.getInt("chapterId");
+    final authorName = prefs.getString("authorName");
     return Directionality(
       textDirection: TextDirection.rtl,
       child: InBackgroundPage(
@@ -291,14 +326,19 @@ class FailingQuizResult extends StatelessWidget {
                     child: CancleButton(
                       text: "مراجعة الباب",
                       onPressed: () async {
-                        final chapterId = prefs.getInt("chapterId");
-                        final authorName = prefs.getString("authorName");
+                        // final chapterId = prefs.getInt("chapterId");
+                        // final authorName = prefs.getString("authorName");
+                        // final classificationId = prefs.getInt("classifId");
+
+                        // ///this the setInt in home page
 
                         GoRouter.of(context).pushReplacement(
                           '/SplitPdfAndSummaryPage',
                           extra: PdfPageArgs(
+                            bookId: bookId ?? 0,
                             chapterId: chapterId!,
                             authorName: authorName!,
+                            classificationId: classificationId!,
                           ),
                         );
                       },

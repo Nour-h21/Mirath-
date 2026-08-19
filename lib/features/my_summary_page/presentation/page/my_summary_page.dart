@@ -1,13 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:mirath/core/design/tokens/typography.dart';
-import 'package:mirath/core/shared/page/In_background_page.dart';
-import 'package:mirath/core/utils/extensions/context_extensions.dart';
-import 'package:mirath/core/utils/extensions/widget_extensions.dart';
 import 'package:mirath/features/my_summary_page/presentation/page/external_summary_page.dart';
 import 'package:mirath/features/my_summary_page/presentation/page/internal_summary_page.dart';
 
-import '../../../../core/design/tokens/colors.dart';
+import '../../../../core/core.dart';
+import '../../../../core/shared/page/in_background.dart';
 import '../widgets/Capsule_tab_widget.dart';
 
 class MySummaryPage extends StatelessWidget {

@@ -4,6 +4,7 @@ class StorageService {
   static const String tokenKey = "token";
   static const String userIdKey = "userId";
   static const String firstLaunchKey = "is_first_launch";
+  static const String userName = "name";
 
   final SharedPreferences prefs;
 
@@ -11,7 +12,7 @@ class StorageService {
 
   /// Save token
   Future<void> saveToken(String token) async {
-    await prefs.setString(tokenKey,token);
+    await prefs.setString(tokenKey, token);
   }
 
   /// Get token
@@ -24,7 +25,7 @@ class StorageService {
     await prefs.remove(tokenKey);
   }
 
-   Future<void> clearUserId() async {
+  Future<void> clearUserId() async {
     await prefs.remove(userIdKey);
   }
 
@@ -35,18 +36,32 @@ class StorageService {
   String? getUserId() {
     return prefs.getString(userIdKey);
   }
-  
 
   // bool get isLoggedIn => getToken() != null;
   bool get isLoggedIn => getToken() != null && getToken()!.isNotEmpty;
 
-   // First Launch
-  Future<void> setFirstLaunchDone() async => prefs.setBool(firstLaunchKey, false);
+  // First Launch
+  Future<void> setFirstLaunchDone() async =>
+      prefs.setBool(firstLaunchKey, false);
   bool get isFirstLaunch => prefs.getBool(firstLaunchKey) ?? true;
 
-  
   // ⭐️ إضافة هذه الوظيفة لإعادة Onboarding
   Future<void> setFirstLaunchToTrue() async {
     await prefs.setBool(firstLaunchKey, true);
+  }
+
+  //SAVE USER NAME
+  Future<void> saveUserName(String name) async {
+    await prefs.setString(userName, name);
+  }
+
+  // GET USER NAME
+  String? getUserName() {
+    return prefs.getString(userName);
+  }
+
+  //REMOVE USER NAME
+  Future<void> clearUserName() async {
+    await prefs.remove(userName);
   }
 }

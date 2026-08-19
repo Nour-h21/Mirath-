@@ -8,7 +8,6 @@ class QuizResultModel extends QuizResultEntity {
     required super.newPoints,
     required super.totalPoints,
     required super.totalQuestions,
-    // required super.chapterId,
   });
 
   factory QuizResultModel.fromJson(Map<String, dynamic> json) {
@@ -19,7 +18,6 @@ class QuizResultModel extends QuizResultEntity {
       newPoints: json["new_points"],
       totalPoints: json["all_user_points"],
       totalQuestions: json["total_questions"] ?? 0,
-      // chapterId: json["id"],
     );
   }
 }

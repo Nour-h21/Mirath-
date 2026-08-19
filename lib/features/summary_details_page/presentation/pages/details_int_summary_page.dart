@@ -1,13 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:mirath/core/design/tokens/colors.dart';
-import 'package:mirath/core/shared/page/In_background_page.dart';
 import 'package:mirath/core/shared/widgets/buttons/auth_button.dart';
 import 'package:mirath/core/shared/widgets/buttons/cancle_button.dart';
-import 'package:mirath/core/utils/extensions/context_extensions.dart';
 
-import '../../../../core/design/tokens/typography.dart';
+import '../../../../core/core.dart';
+
 import '../bloc/summary_details_bloc.dart';
 import '../bloc/summary_details_event.dart';
 import '../bloc/summary_details_state.dart';

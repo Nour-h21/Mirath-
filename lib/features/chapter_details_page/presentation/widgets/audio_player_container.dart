@@ -8,6 +8,7 @@ class AudioPlayerContainer extends StatelessWidget {
   final String audioUrl;
   final double progress;
   final int chapterId;
+  final ValueChanged<double>? onProgressChanged;
 
   const AudioPlayerContainer({
     super.key,
@@ -15,6 +16,7 @@ class AudioPlayerContainer extends StatelessWidget {
     required this.audioUrl,
     required this.progress,
     required this.chapterId,
+    required this.onProgressChanged,
   });
 
   @override
@@ -27,6 +29,7 @@ class AudioPlayerContainer extends StatelessWidget {
               audioUrl: audioUrl,
               progress: progress,
               chapterId: chapterId,
+              onProgressChanged: onProgressChanged,
             )
           : const SizedBox(),
     );

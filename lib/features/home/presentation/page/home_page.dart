@@ -7,9 +7,9 @@ import 'package:mirath/core/design/tokens/typography.dart';
 import 'package:mirath/core/utils/extensions/context_extensions.dart';
 import 'package:mirath/core/utils/extensions/widget_extensions.dart';
 import 'package:mirath/features/home/presentation/widgets/catigories_card.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../app/di/injection_container.dart';
+import '../../../../core/services/storage_service.dart';
 import '../../../../core/shared/page/background_page.dart';
 import '../../../../core/shared/widgets/buttons/auth_button.dart';
 import '../../../chapter_details_page/presentation/page/choose_study_way.dart';
@@ -362,6 +362,8 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final storage = getIt<StorageService>();
+    final userName = storage.getUserName();
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         if (state is HomeLoading) {
@@ -375,11 +377,11 @@ class HomePage extends StatelessWidget {
         }
 
         if (state is HomeSuccess) {
-  //         getIt<NotificationsBloc>().add(
-  //   RegisterCurrentDeviceEvent(),
-  // );
+          //         getIt<NotificationsBloc>().add(
+          //   RegisterCurrentDeviceEvent(),
+          // );
           // GoRouter.of(context).go('/home');
-        
+          final progress = state.home.planProgress!.percentage/100;
           final home = state.home;
           return Stack(
             clipBehavior: Clip.none,
@@ -394,43 +396,42 @@ class HomePage extends StatelessWidget {
                       SizedBox(
                         height: context.h(2.5),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            PopupMenuButton(
-                              color: AppColors.offWhite,
-                              iconColor: AppColors.primaryColor,
-                              itemBuilder: (_) => [
-                                PopupMenuItem(
-                                  // onTap: onDetails,
-                                  child: Text(
-                                    "التفاصيل",
-                                    style: AppTextStyles.login3Style(context),
+                            Expanded(
+                              child: PopupMenuButton(
+                                color: AppColors.offWhite,
+                                iconColor: AppColors.primaryColor,
+                                itemBuilder: (_) => [
+                                  PopupMenuItem(
+                                    // onTap: onDetails,
+                                    child: Text(
+                                      "التفاصيل",
+                                      style: AppTextStyles.login3Style(context),
+                                    ),
                                   ),
-                                ),
-                                PopupMenuItem(
-                                  // onTap: onDelete,
-                                  child: Text(
-                                    "حذف",
-                                    style: AppTextStyles.login3Style(context),
+                                  PopupMenuItem(
+                                    // onTap: onDelete,
+                                    child: Text(
+                                      "حذف",
+                                      style: AppTextStyles.login3Style(context),
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(width: context.w(60)),
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.search,
-                                color: AppColors.primaryColor,
-                                size: context.h(3.4),
+                                ],
                               ),
                             ),
-                            IconButton(
-                              onPressed: () {context.go("/NotificationsPage");
-        },
-                              icon: Icon(
-                                Icons.notifications,
-                                color: AppColors.primaryColor,
-                                size: context.h(3.4),
+                            SizedBox(width: context.w(78)),
+
+                            Expanded(
+                              child: IconButton(
+                                onPressed: () {
+                                  context.go("/NotificationsPage");
+                                },
+                                icon: Icon(
+                                  Icons.notifications,
+                                  color: AppColors.primaryColor,
+                                  size: context.h(3.4),
+                                ),
                               ),
                             ),
                           ],
@@ -451,7 +452,8 @@ class HomePage extends StatelessWidget {
                                   ).copyWith(color: AppColors.black),
                                 ).paddingOnlyRight(context, 1),
                                 Text(
-                                  ' سندس',
+                                  // ' سندس',
+                                  userName!,
                                   style: AppTextStyles.authbuttonStyle(
                                     context,
                                   ).copyWith(color: AppColors.primaryColor),
@@ -459,15 +461,68 @@ class HomePage extends StatelessWidget {
                               ],
                             ),
                             SizedBox(height: context.h(3.2)),
-                            Center(
-                              child: MotivationPlanCard(
-                                title: "حفّز نفسك",
-                                subtitle:
-                                    "استمر بمتابعة أهدافك اليومية والإنجازات الخاصة بخطتك",
-                                progress: 0.3,
-                                onTapTasks: () {},
-                              ),
-                            ),
+                            home.planProgress == null
+                                ? ClipPath(
+                                    clipper: MotivationCardClipper(),
+                                    child: Container(
+                                      width: context.w(92),
+                                      height: context.h(15),
+                                      padding: const EdgeInsets.fromLTRB(
+                                        24,
+                                        24,
+                                        24,
+                                        14,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        gradient: LinearGradient(
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                          colors: [
+                                            AppColors.baieg,
+                                            AppColors.grey,
+                                            AppColors.offWhite,
+                                          ],
+                                        ),
+                                      ),
+
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            '🗓 نظّم وقتك الآن بإنشاء خطتك الخاصة بك',
+                                            style:
+                                                AppTextStyles.smallBlack54Style(
+                                                  context,
+                                                ).copyWith(
+                                                  color: Colors.black,
+                                                ),
+                                          ),
+                                          SizedBox(height: context.h(0.9)),
+                                          Text(
+                                            'لا يوجد خطة حالياً',
+                                            style:
+                                                AppTextStyles.smallBlack54Style(
+                                                  context,
+                                                ).copyWith(
+                                                  color: AppColors.primaryColor,
+                                                ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                : 
+                                Center(
+                                    child: MotivationPlanCard(
+                                      title: "حفّز نفسك",
+                                      subtitle:
+                                          "استمر بمتابعة أهدافك اليومية والإنجازات الخاصة بخطتك",
+                                      progress: progress,
+                                      onTapTasks: () {},
+                                    ),
+                                  ),
                             SizedBox(height: context.h(3)),
                             Row(
                               children: [
@@ -487,9 +542,6 @@ class HomePage extends StatelessWidget {
                                 scrollDirection: Axis.horizontal,
                                 itemCount: home.classifications.length,
                                 itemBuilder: (context, index) {
-                                  final SharedPreferences prefs = getIt();
-                                  final classifId = home.classifications[index].id;
-                                  prefs.setInt("classifId",classifId);
                                   return CatigoriesCard(
                                     image:
                                         classificationImages[home
@@ -533,7 +585,7 @@ class HomePage extends StatelessWidget {
                                         featureImages[home
                                             .features[index]
                                             .feature] ??
-                                        AppAssets.logo,
+                                        AppAssets.summary,
 
                                     title: home.features[index].feature,
 
@@ -543,6 +595,11 @@ class HomePage extends StatelessWidget {
                                             .feature] ??
                                         "",
                                     onTap: () {
+                                      if (home.features[index].id == 1) {
+                                        GoRouter.of(
+                                          context,
+                                        ).push("/GroupSessionPage");
+                                      }
                                       // GoRouter.of(context).push(
                                       //   '/BooksPage',
                                       //   extra: home.features[index].id,
@@ -608,7 +665,12 @@ class HomePage extends StatelessWidget {
                                                   .chapterId,
                                               authorName: home
                                                   .continueReading!
-                                                  .bookName,
+                                                  .authorName,
+                                              bookId:
+                                                  home.continueReading!.bookId,
+                                              classificationId: home
+                                                  .continueReading!
+                                                  .classificationId,
                                             ),
                                           );
                                         },

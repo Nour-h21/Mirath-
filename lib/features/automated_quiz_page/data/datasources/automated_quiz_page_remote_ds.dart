@@ -27,23 +27,16 @@ class QuizRemoteDataSourceImpl implements QuizRemoteDataSource {
   Future<QuizResultModel> endQuiz(int sessionId) async {
     final response = await dio.get(
       "/endQuiz/$sessionId",
-      options: Options(
-        headers: {
-          "Authorization":
-              "Bearer 5|Ze3K8bOfFlF659Ll0BNpnD4T6madFO4ii15iBUG5f1473d24",
-        },
-      ),
     );
 
-    return QuizResultModel.fromJson(response.data["data"]);
+    // return QuizResultModel.fromJson(response.data["data"]);
+     return QuizResultModel.fromJson(response.data["data"]["quiz_result"]);
   }
 
   @override
   Future<SubmitAnswerModel> submitAnswer({
     required int sessionId,
-
     required int questionId,
-
     required int choiceId,
   }) async {
     final response = await dio.get(

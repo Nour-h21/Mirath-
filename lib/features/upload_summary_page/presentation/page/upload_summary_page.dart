@@ -1,12 +1,8 @@
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:mirath/core/utils/extensions/context_extensions.dart';
 
-import '../../../../core/design/tokens/colors.dart';
-import '../../../../core/design/tokens/typography.dart';
-import '../../../../core/shared/page/In_background_page.dart';
+
+import '../../../../core/core.dart';
 import '../../../../core/shared/widgets/buttons/auth_button.dart';
 import '../../../../core/shared/widgets/dialogs/app_alert_dialog.dart';
 import '../../../my_summary_page/presentation/bloc/my_summary_page_bloc.dart';
