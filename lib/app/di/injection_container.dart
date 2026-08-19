@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:mirath/app/di/automated_quiz_module.dart';
+import 'package:mirath/app/di/feedback_module.dart';
 import 'package:mirath/app/di/login_module.dart';
 import 'package:mirath/app/di/my_summary_module.dart';
 import 'package:mirath/app/di/summary_details_module.dart';
@@ -53,6 +54,7 @@ Future<void> init() async {
   await initAiChatModule();
   await initNotificationsModule();
   await initGroupSessionPageModule();
+  await initFeedBackPageModule();
 }
 
 Future<void> setupDI() async {

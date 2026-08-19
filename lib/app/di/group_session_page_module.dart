@@ -23,7 +23,10 @@ Future<void> initGroupSessionPageModule() async {
     () => JoinMeetingUseCase(repository: getIt()),
   );
 
-  getIt.registerFactory<MeetingBloc>(
+  // getIt.registerFactory<MeetingBloc>(
+  //   () => MeetingBloc(createMeetingUseCase: getIt(), joinMeetingUseCase: getIt()),
+  // );
+   getIt.registerLazySingleton<MeetingBloc>(
     () => MeetingBloc(createMeetingUseCase: getIt(), joinMeetingUseCase: getIt()),
   );
 }

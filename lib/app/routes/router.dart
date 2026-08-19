@@ -4,6 +4,7 @@ import 'package:mirath/features/ai_chat/presentation/pages/ai_chat_page.dart';
 import 'package:mirath/features/change_password/presentation/pages/forgot_password.dart';
 import 'package:mirath/features/chapter_details_page/presentation/bloc/chapter_details_bloc.dart';
 import 'package:mirath/features/create_summary_page/presentation/bloc/create_summary_page_bloc.dart';
+import 'package:mirath/features/feedback_page/presentation/bloc/feedback_bloc.dart';
 import 'package:mirath/features/login/presentation/bloc/login_bloc.dart';
 import 'package:mirath/features/upload_summary_page/presentation/bloc/upload_summary_page_bloc.dart';
 
@@ -21,6 +22,7 @@ import '../../features/chapter_details_page/presentation/page/choose_study_way.d
 import '../../features/chapter_details_page/presentation/page/split_pdfAndAudio&summary/pdf_with_audio_page.dart';
 import '../../features/chapter_details_page/presentation/page/split_pdfAndAudio&summary/split_pdf&summary_page.dart';
 import '../../features/chapter_details_page/presentation/page/split_video&summary/split_video&summary_page.dart';
+import '../../features/feedback_page/presentation/pages/feedback_page.dart';
 import '../../features/group_session_page/presentation/bloc/meeting_bloc.dart';
 import '../../features/group_session_page/presentation/page/group_session_page.dart';
 import '../../features/home/presentation/bloc/home_bloc.dart';
@@ -131,6 +133,7 @@ final GoRouter router = GoRouter(
             BlocProvider(create: (_) => getIt<QuizBloc>()),
             BlocProvider(create: (_) => getIt<AnalyticalBloc>()),
             BlocProvider(create: (_) => getIt<MeetingBloc>()),
+            BlocProvider(create: (_) => getIt<FeedbackBloc>()),
           ],
           child: child,
         );
@@ -343,6 +346,12 @@ final GoRouter router = GoRouter(
           path: "/GroupSessionPage",
           builder: (context, state) {
             return GroupSessionPage();
+          },
+        ),
+        GoRoute(
+          path: '/FeedbackPage',
+          builder: (context, state) {
+            return FeedbackPage();
           },
         ),
       ],

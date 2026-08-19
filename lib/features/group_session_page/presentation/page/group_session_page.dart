@@ -1054,60 +1054,132 @@ class _GroupSessionPageState extends State<GroupSessionPage>
   // JOIN JITSI
   // ============================================================
 
+  // Future<void> _joinJitsi({
+  //   required String room,
+  //   required String token,
+  //   required String serverUrl,
+  //   required String title,
+  // }) async {
+  //   try {
+  //     final options = JitsiMeetConferenceOptions(
+  //       room: room,
+
+  //       serverURL: serverUrl,
+
+  //       token: token,
+
+  //       configOverrides: {
+  //         "startWithAudioMuted": false,
+  //         "startWithVideoMuted": false,
+  //         "subject": title,
+  //       },
+
+  //       featureFlags: {"unsaferoomwarning.enabled": false},
+  //     );
+
+  //     // await jitsiMeet.join(options);
+
+      
+  //     final listener = JitsiMeetEventListener(
+  //       conferenceJoined: (url) {
+  //         debugPrint("JITSI: Conference joined: $url");
+  //       },
+
+  //       conferenceTerminated: (url, error) {
+  //         debugPrint("JITSI: Conference terminated: $url | error: $error");
+  //       },
+
+  //       readyToClose: () {
+  //         debugPrint("JITSI: Ready to close");
+  //       },
+  //     );
+
+  //     await jitsiMeet.join(options, listener);
+  //   } catch (e) {
+  //     debugPrint("JITSI ERROR: $e");
+
+  //     if (!mounted) {
+  //       return;
+  //     }
+
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(
+  //         backgroundColor: Colors.red,
+  //         content: Text("حدث خطأ أثناء الدخول إلى الجلسة"),
+  //       ),
+  //     );
+  //   }
+  // }
   Future<void> _joinJitsi({
-    required String room,
-    required String token,
-    required String serverUrl,
-    required String title,
-  }) async {
-    try {
-      final options = JitsiMeetConferenceOptions(
-        room: room,
+  required String room,
+  required String token,
+  required String serverUrl,
+  required String title,
+}) async {
+  try {
+    final options = JitsiMeetConferenceOptions(
+      room: room,
+      serverURL: serverUrl,
+      token: token,
+      configOverrides: {
+        "startWithAudioMuted": false,
+        "startWithVideoMuted": false,
+        "subject": title,
+      },
+      featureFlags: {
+        "unsaferoomwarning.enabled": false,
+      },
+    );
 
-        serverURL: serverUrl,
+    final listener = JitsiMeetEventListener(
+      conferenceJoined: (url) {
+        debugPrint("JITSI: Conference joined: $url");
+      },
 
-        token: token,
+      conferenceTerminated: (url, error) {
+        debugPrint(
+          "JITSI: Conference terminated: $url | error: $error",
+        );
 
-        configOverrides: {
-          "startWithAudioMuted": false,
-          "startWithVideoMuted": false,
-          "subject": title,
-        },
+        if (!mounted) {
+          return;
+        }
 
-        featureFlags: {"unsaferoomwarning.enabled": false},
-      );
+        // Jitsi انتهى والمستخدم رجع إلى Mirath
+        ScaffoldMessenger.of(context).showSnackBar(
+           SnackBar(
+            content: Text("تم إنهاء الجلسة"),
+            backgroundColor: AppColors.primaryColor
+          ),
+        );
+      },
 
-      // await jitsiMeet.join(options);
-      final listener = JitsiMeetEventListener(
-        conferenceJoined: (url) {
-          debugPrint("JITSI: Conference joined: $url");
-        },
+      readyToClose: () {
+        debugPrint("JITSI: Ready to close");
+      },
+    );
 
-        conferenceTerminated: (url, error) {
-          debugPrint("JITSI: Conference terminated: $url | error: $error");
-        },
+    await jitsiMeet.join(
+      options,
+      listener,
+    );
+  } catch (e) {
+    debugPrint("JITSI ERROR: $e");
 
-        readyToClose: () {
-          debugPrint("JITSI: Ready to close");
-        },
-      );
-
-      await jitsiMeet.join(options, listener);
-    } catch (e) {
-      debugPrint("JITSI ERROR: $e");
-
-      if (!mounted) {
-        return;
-      }
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          backgroundColor: Colors.red,
-          content: Text("حدث خطأ أثناء الدخول إلى الجلسة"),
-        ),
-      );
+    if (!mounted) {
+      return;
     }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        backgroundColor: Colors.red,
+        content: Text(
+          "حدث خطأ أثناء الدخول إلى الجلسة",
+        ),
+      ),
+    );
   }
+}
 
   // ============================================================
   // SCHEDULED SESSION TAB

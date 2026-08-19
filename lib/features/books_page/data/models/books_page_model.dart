@@ -1,4 +1,3 @@
-import '../../../../core/constants/urls.dart';
 
 class BookModel {
   final int id;
@@ -27,7 +26,8 @@ class BookModel {
 
       authorName: json['author_name'],
 
-      photo: json['photo'].replaceAll('http://localhost:8000', AppUrls.localhost),
+      // photo: json['photo'].replaceAll('http://localhost:8000', AppUrls.localhost),
+      photo: json['photo'],
     );
   }
 }

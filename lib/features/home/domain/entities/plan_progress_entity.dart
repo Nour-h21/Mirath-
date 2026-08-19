@@ -2,7 +2,7 @@ class PlanProgressEntity {
   final int totalPages;
   final int completdPages;
   final int remainingPages;
-  final double percentage;
+  final int percentage;
 
   PlanProgressEntity( {
     required this.totalPages,

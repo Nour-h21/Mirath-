@@ -381,7 +381,9 @@ class HomePage extends StatelessWidget {
           //   RegisterCurrentDeviceEvent(),
           // );
           // GoRouter.of(context).go('/home');
-          final progress = state.home.planProgress!.percentage/100;
+          final progress =
+              state.home.planProgress!.percentage /
+              100.clamp(0.0, 1.0).toDouble();
           final home = state.home;
           return Stack(
             clipBehavior: Clip.none,
@@ -404,19 +406,17 @@ class HomePage extends StatelessWidget {
                                 iconColor: AppColors.primaryColor,
                                 itemBuilder: (_) => [
                                   PopupMenuItem(
-                                    // onTap: onDetails,
+                                    onTap: () {
+                                      GoRouter.of(
+                                        context,
+                                      ).push("/FeedbackPage");
+                                    },
                                     child: Text(
-                                      "التفاصيل",
+                                      "تواصل معنا",
                                       style: AppTextStyles.login3Style(context),
                                     ),
                                   ),
-                                  PopupMenuItem(
-                                    // onTap: onDelete,
-                                    child: Text(
-                                      "حذف",
-                                      style: AppTextStyles.login3Style(context),
-                                    ),
-                                  ),
+                                 
                                 ],
                               ),
                             ),
@@ -495,9 +495,7 @@ class HomePage extends StatelessWidget {
                                             style:
                                                 AppTextStyles.smallBlack54Style(
                                                   context,
-                                                ).copyWith(
-                                                  color: Colors.black,
-                                                ),
+                                                ).copyWith(color: Colors.black),
                                           ),
                                           SizedBox(height: context.h(0.9)),
                                           Text(
@@ -513,8 +511,7 @@ class HomePage extends StatelessWidget {
                                       ),
                                     ),
                                   )
-                                : 
-                                Center(
+                                : Center(
                                     child: MotivationPlanCard(
                                       title: "حفّز نفسك",
                                       subtitle:

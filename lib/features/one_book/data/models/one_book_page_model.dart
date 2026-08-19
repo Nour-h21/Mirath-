@@ -1,4 +1,3 @@
-import 'package:mirath/core/constants/urls.dart';
 
 class BookDetailsModel {
   final String photo;
@@ -33,10 +32,11 @@ class BookDetailsModel {
 
   factory BookDetailsModel.fromJson(Map<String, dynamic> json) {
     return BookDetailsModel(
-      photo: json['data']['book']['photo'].replaceAll(
-        'http://localhost:8000',
-        AppUrls.localhost,
-      ),
+      // photo: json['data']['book']['photo'].replaceAll(
+      //   'http://localhost:8000',
+      //   AppUrls.localhost,
+      // ),
+       photo: json['data']['book']['photo'],
 
       title: json['data']['book']['title'],
 
